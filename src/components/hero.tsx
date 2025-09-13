@@ -16,7 +16,7 @@ const Hero = () => {
 
         <div className="flex gap-3">
           <Link href={`/textbox`}>
-            <Button disabled>Open Text Box</Button>
+            <Button>Open Text Box</Button>
           </Link>
           <Link href={`/canvas`}>
             <Button disabled variant={"outline"}>
