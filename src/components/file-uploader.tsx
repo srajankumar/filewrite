@@ -34,7 +34,7 @@ function generateShortCode(length = 4) {
 
 export default function FileUploader() {
   const [
-    { files, isDragging, errors },
+    { files, isDragging },
     {
       handleDragEnter,
       handleDragLeave,
@@ -66,7 +66,7 @@ export default function FileUploader() {
     setUploading(true);
 
     const filePath = `${Date.now()}-${fileObj.name}`;
-    const bucketName = "files"; // change to your bucket
+    const bucketName = "files"; // supabase bucket
 
     if (!(fileObj instanceof File)) {
       alert("Selected file is not a valid File object");
@@ -116,7 +116,7 @@ export default function FileUploader() {
   };
 
   return (
-    <div className="flex py-10 flex-col gap-2 w-full max-w-md mx-auto">
+    <div className="flex py-10 flex-col gap-2 w-full mx-auto">
       <div
         role="button"
         onClick={openFileDialog}
@@ -251,6 +251,14 @@ export default function FileUploader() {
           </div>
         </div>
       )}
+
+      <p
+        aria-live="polite"
+        role="region"
+        className="text-muted-foreground mt-2 text-center text-xs"
+      >
+        Upload your file and get a sharable link
+      </p>
     </div>
   );
 }

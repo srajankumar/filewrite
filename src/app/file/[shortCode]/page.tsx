@@ -30,7 +30,7 @@ export default async function FilePage({
   }
 
   return (
-    <main className="min-h-dvh px-5 flex flex-col justify-center items-center gap-6">
+    <main className="min-h-dvh max-w-xl mx-auto px-5 flex flex-col justify-center items-center gap-6">
       <Link
         href={"https://filewrite.vercel.app"}
         target="_blank"
