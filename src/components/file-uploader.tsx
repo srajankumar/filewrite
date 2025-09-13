@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabaseClient";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import {
   Tooltip,
   TooltipContent,
@@ -62,14 +63,14 @@ export default function FileUploader() {
   };
 
   const handleUpload = async () => {
-    if (!fileObj) return alert("Please select a file first");
+    if (!fileObj) return toast.error("Please select a file first");
     setUploading(true);
 
     const filePath = `${Date.now()}-${fileObj.name}`;
     const bucketName = "files"; // supabase bucket
 
     if (!(fileObj instanceof File)) {
-      alert("Selected file is not a valid File object");
+      toast.error("Selected file is not a valid File object");
       setUploading(false);
       return;
     }
@@ -78,7 +79,7 @@ export default function FileUploader() {
       .upload(filePath, fileObj as File);
 
     if (uploadError) {
-      alert("Error uploading file");
+      toast.error("Error uploading file");
       setUploading(false);
       return;
     }
@@ -106,7 +107,7 @@ export default function FileUploader() {
     ]);
 
     if (insertError) {
-      alert("Error saving link");
+      toast.error("Error saving link");
       setUploading(false);
       return;
     }
@@ -164,7 +165,7 @@ export default function FileUploader() {
             <Button
               size="icon"
               variant="ghost"
-              className="-me-2 size-8 cursor-pointer"
+              className="-me-2 size-8"
               onClick={() => removeFile(files[0]?.id)}
             >
               <XIcon className="size-4" />
@@ -174,7 +175,7 @@ export default function FileUploader() {
           <Button
             onClick={handleUpload}
             disabled={uploading}
-            className="w-full cursor-pointer"
+            className="w-full"
           >
             {uploading ? "Uploading" : "Upload"}
             {uploading && (
@@ -215,7 +216,7 @@ export default function FileUploader() {
                   <TooltipTrigger asChild>
                     <button
                       onClick={handleCopy}
-                      className="absolute cursor-pointer inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 hover:text-foreground transition"
+                      className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 hover:text-foreground transition"
                       aria-label={copied ? "Copied" : "Copy to clipboard"}
                       disabled={copied}
                     >

@@ -15,14 +15,15 @@ const Hero = () => {
         </p>
 
         <div className="flex gap-3">
-          <Link href={`/textbox`}>
-            <Button>Open Text Box</Button>
-          </Link>
-          <Link href={`/canvas`}>
-            <Button disabled variant={"outline"}>
-              Open Canvas
-            </Button>
-          </Link>
+          <Button asChild>
+            <Link href={`/textbox`}>Open Text Box</Link>
+          </Button>
+          {/* <Button asChild disabled variant={"outline"}>
+            <Link href={`/canvas`}>Open Canvas</Link>
+          </Button> */}
+          <Button disabled variant={"outline"}>
+            Open Canvas
+          </Button>
         </div>
       </div>
     </section>

@@ -16,11 +16,11 @@ const Header = () => {
         />
         <h1 className="text-xl font-semibold">Filewrite</h1>
       </Link>
-      <Link href={"https://github.com/srajankumar"} target="_blank">
-        <Button className="cursor-pointer" variant={"outline"} size={"icon"}>
+      <Button asChild variant={"outline"} size={"icon"}>
+        <Link href={"https://github.com/srajankumar"} target="_blank">
           <Github />
-        </Button>
-      </Link>
+        </Link>
+      </Button>
     </header>
   );
 };
