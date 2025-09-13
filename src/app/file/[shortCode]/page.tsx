@@ -5,12 +5,12 @@ import { FileDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-interface FilePageProps {
-  params: { shortCode: string };
-}
-
-export default async function FilePage({ params }: FilePageProps) {
-  const { shortCode } = params;
+export default async function FilePage({
+  params,
+}: {
+  params: Promise<{ shortCode: string }>;
+}) {
+  const { shortCode } = await params;
 
   const { data, error } = await supabase
     .from("file_links")
