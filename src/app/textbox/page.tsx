@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/header";
+import { BrushCleaning, CopyIcon } from "lucide-react";
 
 type User = {
   username: string;
@@ -165,8 +166,17 @@ export default function Textbox() {
   };
 
   return (
-    <main className="min-h-dvh max-w-xl mx-auto px-5">
+    <main className="min-h-dvh max-w-xl mx-auto px-5 pb-28">
       <Header />
+      {users && (
+        <ul className="flex flex-wrap gap-2">
+          {Object.entries(users).map(([id, user]) => (
+            <Badge key={id} variant={id === myId ? "default" : "secondary"}>
+              {user.username} {id === myId && "(You)"}
+            </Badge>
+          ))}
+        </ul>
+      )}
 
       <Textarea
         ref={textareaRef}
@@ -177,18 +187,22 @@ export default function Textbox() {
         style={{ lineHeight: "1.75" }}
         disabled={false}
       />
-      <div className="flex md:flex-row flex-col gap-2 mb-5">
+      
+      <div className="fixed bottom-10 md:right-10 right-5 bg-white shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">
         <Button
+        variant={"ghost"}
           onClick={async () => {
             await navigator.clipboard.writeText(text);
             toast.success("Copied to clipboard!");
           }}
+          className="rounded-full"
           type="button"
+          size={"icon"}
         >
-          Copy
+          <CopyIcon size={16} />
         </Button>
         <Button
-          variant="secondary"
+          variant="ghost"
           onClick={() => {
             setText("");
             if (joinedRoom) {
@@ -197,20 +211,12 @@ export default function Textbox() {
               socket.emit("text-change", "");
             }
           }}
+          className="rounded-full"
           type="button"
+          size={"icon"}
         >
-          Clear
+          <BrushCleaning size={16} />
         </Button>
-      </div>
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold mb-4">Online Users:</h2>
-        <ul className="flex flex-wrap gap-2">
-          {Object.entries(users).map(([id, user]) => (
-            <Badge key={id} variant={id === myId ? "default" : "secondary"}>
-              {user.username} {id === myId && "(You)"}
-            </Badge>
-          ))}
-        </ul>
       </div>
     </main>
   );
