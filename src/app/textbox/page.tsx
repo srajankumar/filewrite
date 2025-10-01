@@ -189,20 +189,18 @@ export default function Textbox() {
       />
       
       <div className="fixed bottom-10 md:right-10 right-5 bg-white shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">
-        <Button
-        variant={"ghost"}
+        <button
           onClick={async () => {
             await navigator.clipboard.writeText(text);
             toast.success("Copied to clipboard!");
           }}
-          className="rounded-full"
+          className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
           type="button"
-          size={"icon"}
         >
           <CopyIcon size={16} />
-        </Button>
-        <Button
-          variant="ghost"
+        </button>
+        <button
+          className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
           onClick={() => {
             setText("");
             if (joinedRoom) {
@@ -211,12 +209,10 @@ export default function Textbox() {
               socket.emit("text-change", "");
             }
           }}
-          className="rounded-full"
           type="button"
-          size={"icon"}
         >
           <BrushCleaning size={16} />
-        </Button>
+        </button>
       </div>
     </main>
   );
