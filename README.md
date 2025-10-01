@@ -14,7 +14,7 @@ Filewrite lets you generate shareable links with a collaborative text box and ca
 - **Zero Setup, Instant Sharing**  
    Generate a unique, secure link for your session with a single click. No accounts, sign-ups, or downloads required for guests.
 
-- **Interactive Canvas (coming soon)**
+- **Interactive Canvas (coming soon)**  
   Utilize an integrated drawing canvas for sketching ideas, creating flowcharts, or annotating concepts together in real-time.
 
 ## Contribution & Feedback
