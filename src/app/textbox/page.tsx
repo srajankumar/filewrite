@@ -4,9 +4,8 @@ import io from "socket.io-client";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import Header from "@/components/header";
-import { BrushCleaning, CopyIcon } from "lucide-react";
+import { BrushCleaning, ClipboardPaste, CopyIcon } from "lucide-react";
 
 type User = {
   username: string;
@@ -198,6 +197,26 @@ export default function Textbox() {
           type="button"
         >
           <CopyIcon size={16} />
+        </button>
+        <button
+          onClick={async () => {
+            try {
+              const clipboardText = await navigator.clipboard.readText();
+              setText(clipboardText);
+              if (joinedRoom) {
+                socket.emit("room-text-change", clipboardText);
+              } else {
+                socket.emit("text-change", clipboardText);
+              }
+              toast.success("Pasted from clipboard!");
+            } catch (err) {
+              toast.error("Failed to paste from clipboard.");
+            }
+          }}
+          className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
+          type="button"
+        >
+          <ClipboardPaste size={16} />
         </button>
         <button
           className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
