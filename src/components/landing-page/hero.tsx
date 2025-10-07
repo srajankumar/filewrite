@@ -27,9 +27,6 @@ const Hero = () => {
               <LoginOptions />
             </DialogContent>
           </Dialog>
-          <Button variant={'outline'} asChild>
-            <Link href={`/login`}>Login</Link>
-          </Button>
         </div>
       </div>
     </section>
