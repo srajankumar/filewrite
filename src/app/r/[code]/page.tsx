@@ -1,13 +1,16 @@
 import { supabase } from "@/lib/supabaseClient";
 import { redirect } from "next/navigation";
 
-type Params = { params: { code: string } };
-
-export default async function RedirectPage({ params }: Params) {
+export default async function RedirectPage({
+  params,
+}: {
+  params: Promise<{ shortCode: string }>;
+}) {
+  const { code } = await params;
   const { data } = await supabase
     .from("links")
     .select("original_url, expires_at")
-    .eq("short_code", params.code)
+    .eq("short_code", code)
     .single();
 
   if (!data) {
