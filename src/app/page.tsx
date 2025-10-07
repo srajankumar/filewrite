@@ -5,6 +5,7 @@ import FileUploader from "@/components/file-uploader";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Hero from "@/components/hero";
+import UrlShortener from "@/components/url-shortener";
 
 export default function Page() {
   return (
@@ -12,6 +13,7 @@ export default function Page() {
       <Header />
       <Hero />
       <FileUploader />
+      <UrlShortener/>
       <FAQ />
       <Footer />
     </main>

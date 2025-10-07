@@ -113,7 +113,7 @@ export default function FileUploader() {
       return;
     }
 
-    setDownloadPageURL(`${window.location.origin}/file/${shortCode}`);
+    setDownloadPageURL(`${window.location.origin}/f/${shortCode}`);
     setUploading(false);
   };
 
