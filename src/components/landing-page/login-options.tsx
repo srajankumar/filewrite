@@ -22,7 +22,7 @@ const LoginOptions = () => {
   ]
 
   return (
-     <div className='grid md:grid-cols-3 grid-cols-2 gap-6 text-center pb-5'>
+     <div className='grid md:grid-cols-3 grid-cols-2 gap-6 text-center'>
       {features.map((feature, index) => (
         <Link href={feature.link} key={index} className='grid group gap-2'>
           <div className='text-primary mx-auto p-2 border-2 border-transparent transition-all duration-200 group-hover:border-primary/30 group-hover:shadow-sm rounded-md group-hover:bg-primary/10 w-fit h-fit'>

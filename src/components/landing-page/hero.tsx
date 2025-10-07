@@ -2,12 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import LoginOptions from "@/components/landing-page/login-options";
 
 const Hero = () => {
@@ -21,18 +19,15 @@ const Hero = () => {
           Share files, shorten links, and co-create ideas - all in ones place.
         </p>
         <div className="flex gap-3">
-          <AlertDialog>
-            <AlertDialogTrigger>
+          <Dialog>
+            <DialogTrigger asChild>
               <Button>Try for free</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-5xl">
+            </DialogTrigger>
+            <DialogContent>
               <LoginOptions />
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-          <Button disabled variant={'outline'} asChild>
+            </DialogContent>
+          </Dialog>
+          <Button variant={'outline'} asChild>
             <Link href={`/login`}>Login</Link>
           </Button>
         </div>
