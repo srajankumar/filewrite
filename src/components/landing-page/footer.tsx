@@ -7,7 +7,7 @@ const Footer = () => {
       <Link
         href={"https://srajan.vercel.app"}
         target="_blank"
-        className="underline underline-offset-4 hover:text-primary transition-colors duration-200"
+        className="hover:text-primary transition-colors duration-200"
       >
         Srajan Kumar
       </Link>

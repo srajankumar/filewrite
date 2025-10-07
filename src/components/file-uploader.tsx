@@ -113,12 +113,12 @@ export default function FileUploader() {
       return;
     }
 
-    setDownloadPageURL(`${window.location.origin}/file/${shortCode}`);
+    setDownloadPageURL(`${window.location.origin}/f/${shortCode}`);
     setUploading(false);
   };
 
   return (
-    <div className="flex py-10 flex-col gap-2 w-full mx-auto">
+    <div className="flex flex-col gap-2 w-full mx-auto">
       <div
         role="button"
         onClick={openFileDialog}
