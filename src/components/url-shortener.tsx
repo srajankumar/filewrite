@@ -78,12 +78,14 @@ export default function UrlShortener() {
 
   return (
     <div className="flex py-10 flex-col gap-2 w-full mx-auto">
+      <h1 className="font-semibold">Shorten a long URL</h1>
+
       <div className="grid gap-3">
         <div className="flex gap-2">
           <Input
             type="url"
             required
-            placeholder="Enter your long URL here"
+            placeholder="Enter your long link here"
             value={originalUrl}
             onChange={(e) => setOriginalUrl(e.target.value)}
           />

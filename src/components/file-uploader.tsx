@@ -119,6 +119,8 @@ export default function FileUploader() {
 
   return (
     <div className="flex py-10 flex-col gap-2 w-full mx-auto">
+      <h1 className="font-semibold">Upload and share files</h1>
+
       <div
         role="button"
         onClick={openFileDialog}
