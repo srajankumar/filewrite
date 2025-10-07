@@ -53,7 +53,7 @@ export default async function FilePage({
             Click below to download this file
           </p>
         </div>
-        <Link className="w-full" href={data.file_url} download>
+        <Link className="w-full" href={data.file_url} download={true}>
           <Button className="w-full cursor-pointer">Download Now</Button>
         </Link>
       </Card>

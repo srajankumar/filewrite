@@ -33,7 +33,7 @@ export default function Loading() {
           <Spinner/>
         </div>
       )}
-      {!error && (
+      {error && (
         <div className="fixed flex justify-center select-none items-center bg-background border border-border text-sm px-5 py-3 rounded-md m-5 bottom-0 z-50 right-0">
           Server connection failed
           <CircleAlert className="h-5 w-5 ml-2 text-red-500"/>
