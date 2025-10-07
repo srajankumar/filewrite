@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 export default async function RedirectPage({
   params,
 }: {
-  params: Promise<{ shortCode: string }>;
+  params: Promise<{ code: string }>;
 }) {
   const { code } = await params;
   const { data } = await supabase
