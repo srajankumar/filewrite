@@ -30,7 +30,7 @@ export default function Loading() {
       {loading && (
         <div className="fixed flex justify-center select-none items-center bg-background border border-border text-sm px-5 py-3 rounded-md m-5 bottom-0 z-50 right-0">
           Connecting to server
-          <Spinner/>
+          <Spinner className="ml-2"/>
         </div>
       )}
       {error && (

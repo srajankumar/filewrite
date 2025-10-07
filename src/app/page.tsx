@@ -1,20 +1,20 @@
 "use client";
 
-import FAQ from "@/components/faq";
-import FileUploader from "@/components/file-uploader";
-import Footer from "@/components/footer";
 import Header from "@/components/header";
-import Hero from "@/components/hero";
-import UrlShortener from "@/components/url-shortener";
+import Hero from "@/components/landing-page/hero";
+import FAQ from "@/components/landing-page/faq";
+import Footer from "@/components/landing-page/footer";
+import Feature from "@/components/landing-page/feature";
+import CTA from "@/components/landing-page/cta";
 
 export default function Page() {
   return (
     <main className="min-h-dvh max-w-xl mx-auto px-5">
       <Header />
       <Hero />
-      <FileUploader />
-      <UrlShortener/>
+      <Feature/>
       <FAQ />
+      <CTA/>
       <Footer />
     </main>
   );

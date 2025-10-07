@@ -77,9 +77,7 @@ export default function UrlShortener() {
   };
 
   return (
-    <div className="flex py-10 flex-col gap-2 w-full mx-auto">
-      <h1 className="font-semibold">Shorten a long URL</h1>
-
+    <div className="flex flex-col gap-2 w-full mx-auto">
       <div className="grid gap-3">
         <div className="flex gap-2">
           <Input
