@@ -29,7 +29,7 @@ const Feature = () => {
           </div>
           <div>
             <h2 className='font-semibold'>{feature.title}</h2>
-            <p className='text-sm'>{feature.description}</p>
+            <p className='text-sm text-muted-foreground'>{feature.description}</p>
           </div>
         </div>
       ))}
