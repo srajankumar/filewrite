@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
+import { ModeToggle } from "./mode-toggle";
 
 const Header = () => {
   return (
@@ -16,11 +17,7 @@ const Header = () => {
         />
         <h1 className="text-xl font-semibold">Filewrite</h1>
       </Link>
-      <Button asChild variant={"outline"} size={"icon"}>
-        <Link href={"https://github.com/srajankumar"} target="_blank">
-          <Github />
-        </Link>
-      </Button>
+      <ModeToggle/>
     </header>
   );
 };

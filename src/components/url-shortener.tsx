@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
+import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
 import {
@@ -44,12 +45,13 @@ export default function UrlShortener() {
     if (inputRef.current) {
       navigator.clipboard.writeText(inputRef.current.value);
       setCopied(true);
+      toast.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 1500);
     }
   };
 
   const handleShorten = async () => {
-    if (!originalUrl) return;
+    if (!originalUrl) return toast.error("Please enter a valid URL");
     setLoading(true);
 
     // generate a short code (6 chars from uuid)
@@ -67,6 +69,7 @@ export default function UrlShortener() {
 
     if (error) {
       console.error(error);
+      toast.error("Failed to shorten URL");
       setLoading(false);
       return;
     }

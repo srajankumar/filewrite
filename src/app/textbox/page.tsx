@@ -187,7 +187,7 @@ export default function Textbox() {
         disabled={false}
       />
       
-      <div className="fixed bottom-10 md:right-10 right-5 bg-white shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">
+      <div className="fixed bottom-10 md:right-10 right-5 bg-background shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">
         <button
           onClick={async () => {
             await navigator.clipboard.writeText(text);

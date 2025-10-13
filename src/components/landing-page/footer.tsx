@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="py-10 text-center text-sm text-slate-500">
+    <footer className="py-10 text-center text-sm text-muted-foreground">
       © {new Date().getFullYear()} - Filewrite by{" "}
       <Link
         href={"https://srajan.vercel.app"}
