@@ -1,12 +1,14 @@
-"use client"
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
-const Error = () => {
+export default function NotFound() {
   return (
-    <div className="min-h-dvh flex justify-center items-center flex-col gap-2 p-5">
-        <h1 className="text-lg">Something went wrong!</h1>
-        <p className="text-muted-foreground text-sm">Please try again after some time.</p>
-    </div>
+    <section className="mx-auto min-h-dvh text-center flex gap-4 flex-col justify-center items-center px-5">
+      <p className="text-3xl tracking-tight font-bold md:text-4xl">{"Something went wrong."}</p>
+      <p className="text-muted-foreground">{"Please try again after some time."}</p>
+      <Button asChild>
+        <Link href={'/'}>Take me home</Link>
+      </Button>
+    </section>
   )
 }
-
-export default Error
