@@ -17,7 +17,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Filewrite",
+  title: {
+    template: "%s | Filewrite",
+    default: "Filewrite"
+  },
   description: "Built for fast file sharing & realtime collaboration",
 };
 

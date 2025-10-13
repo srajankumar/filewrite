@@ -59,6 +59,7 @@ export default function FileUploader() {
     if (inputRef.current) {
       navigator.clipboard.writeText(inputRef.current.value);
       setCopied(true);
+      toast.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 1500);
     }
   };
