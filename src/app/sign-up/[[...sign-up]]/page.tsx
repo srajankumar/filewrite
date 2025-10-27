@@ -225,7 +225,14 @@ export default function Page() {
                   <h1 className="text-xl font-bold">Sign Up</h1>
                   <FieldDescription>
                     Already have an account?{" "}
-                    <Link href="/sign-in">Sign in</Link>
+                    <Button
+                      asChild
+                      type="button"
+                      size={"link"}
+                      variant={"link"}
+                    >
+                      <Link href="/sign-in">Sign in</Link>
+                    </Button>
                   </FieldDescription>
                 </div>
                 <Field>

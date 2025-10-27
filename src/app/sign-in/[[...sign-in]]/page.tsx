@@ -76,7 +76,7 @@ export default function SignInForm() {
   // Display a form to capture the user's email and password
   return (
     <>
-      <div className="bg-background flex min-h-dvh flex-col items-center justify-center gap-6 p-5 md:p-10">
+      <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-5 md:p-10">
         <div className="w-full max-w-sm">
           <div className="flex flex-col gap-6">
             <form onSubmit={(e) => handleSubmit(e)}>
@@ -97,7 +97,14 @@ export default function SignInForm() {
                   <h1 className="text-xl font-bold">Sign In</h1>
                   <FieldDescription>
                     Don&apos;t have an account?{" "}
-                    <Link href="/sign-up">Sign up</Link>
+                    <Button
+                      asChild
+                      type="button"
+                      size={"link"}
+                      variant={"link"}
+                    >
+                      <Link href="/sign-up">Sign up</Link>
+                    </Button>
                   </FieldDescription>
                 </div>
                 <Field>

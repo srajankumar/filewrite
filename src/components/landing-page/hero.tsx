@@ -26,7 +26,7 @@ const Hero = () => {
           </Dialog>
           <SignedOut>
             <SignInButton>
-              <Button variant={"secondary"}>Sign in</Button>
+              <Button variant={"ghost"}>Sign in</Button>
             </SignInButton>
           </SignedOut>
           <SignedIn>
