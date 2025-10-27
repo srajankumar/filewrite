@@ -1,18 +1,38 @@
 "use client";
 
 import * as React from "react";
-import { useSignIn } from "@clerk/nextjs";
+import { useSignIn, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import Link from "next/link";
 
 export default function SignInForm() {
+  const { isSignedIn } = useAuth();
   const { isLoaded, signIn, setActive } = useSignIn();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
   const router = useRouter();
+
+  if (isSignedIn) {
+    router.push("/dashboard");
+  }
 
   // Handle the submission of the sign-in form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setLoading(true);
 
     if (!isLoaded) return;
 
@@ -36,7 +56,7 @@ export default function SignInForm() {
               return;
             }
 
-            router.push("/");
+            router.push("/dashboard");
           },
         });
       } else {
@@ -44,9 +64,11 @@ export default function SignInForm() {
         // complete further steps.
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
+      setLoading(false);
     } catch (err) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
+      setLoading(false);
       console.error(JSON.stringify(err, null, 2));
     }
   };
@@ -54,30 +76,73 @@ export default function SignInForm() {
   // Display a form to capture the user's email and password
   return (
     <>
-      <h1>Sign in</h1>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div>
-          <label htmlFor="email">Enter email address</label>
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            id="email"
-            name="email"
-            type="email"
-            value={email}
-          />
+      <div className="bg-background flex min-h-dvh flex-col items-center justify-center gap-6 p-5 md:p-10">
+        <div className="w-full max-w-sm">
+          <div className="flex flex-col gap-6">
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <FieldGroup>
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <Link
+                    href="/"
+                    className="flex flex-col items-center gap-2 font-medium"
+                  >
+                    <Image
+                      src={"/assets/logo-transparant.png"}
+                      alt="Filewrite"
+                      width={30}
+                      height={30}
+                    />
+                    <span className="sr-only">Filewrite</span>
+                  </Link>
+                  <h1 className="text-xl font-bold">Sign In</h1>
+                  <FieldDescription>
+                    Don&apos;t have an account?{" "}
+                    <Link href="/sign-up">Sign up</Link>
+                  </FieldDescription>
+                </div>
+                <Field>
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    required
+                    value={email}
+                    disabled={loading}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <Input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="*********"
+                    required
+                    value={password}
+                    disabled={loading}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Field>
+                <Field>
+                  <Button disabled={loading} type="submit">
+                    {loading ? (
+                      <>
+                        Loading
+                        <Spinner />
+                      </>
+                    ) : (
+                      "Login"
+                    )}
+                  </Button>
+                </Field>
+                <div id="clerk-captcha" />
+              </FieldGroup>
+            </form>
+          </div>
         </div>
-        <div>
-          <label htmlFor="password">Enter password</label>
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            id="password"
-            name="password"
-            type="password"
-            value={password}
-          />
-        </div>
-        <button type="submit">Sign in</button>
-      </form>
+      </div>
     </>
   );
 }
