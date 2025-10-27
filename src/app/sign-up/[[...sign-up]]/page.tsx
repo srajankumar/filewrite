@@ -169,7 +169,8 @@ export default function Page() {
                       </InputOTPGroup>
                     </InputOTP>
                     <FieldDescription className="text-center">
-                      Didn&apos;t receive the code? <a href="/sign-up">Retry</a>
+                      Didn&apos;t receive the code?{" "}
+                      <Link href="/sign-up">Retry</Link>
                     </FieldDescription>
                   </Field>
                   <Field>
