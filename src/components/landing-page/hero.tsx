@@ -1,12 +1,9 @@
 import React from "react";
-import Link from "next/link";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LoginOptions from "@/components/landing-page/login-options";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -27,6 +24,16 @@ const Hero = () => {
               <LoginOptions />
             </DialogContent>
           </Dialog>
+          <SignedOut>
+            <SignInButton>
+              <Button variant={"secondary"}>Sign in</Button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <Button asChild variant={"secondary"}>
+              <Link href={"/dashboard"}>Dashboard</Link>
+            </Button>
+          </SignedIn>
         </div>
       </div>
     </section>
