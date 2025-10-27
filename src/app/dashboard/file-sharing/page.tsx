@@ -1,7 +1,9 @@
 import React from "react";
-export default function Dashboard() {
+
+export default function FileSharing() {
   return (
-    <div>
+    <div className="grid gap-5">
+      <h1 className="font-semibold text-2xl text-center py-5">File Sharing</h1>
       <p className="text-justify">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi rerum
         iure, quibusdam, ex eum vel veritatis dolorum molestias tempora quia

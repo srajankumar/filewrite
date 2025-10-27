@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 
 const Header = () => {
@@ -17,7 +15,7 @@ const Header = () => {
         />
         <h1 className="text-xl font-semibold">Filewrite</h1>
       </Link>
-      <ModeToggle/>
+      <ModeToggle />
     </header>
   );
 };
