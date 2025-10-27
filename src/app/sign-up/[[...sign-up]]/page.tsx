@@ -17,7 +17,6 @@ import { Spinner } from "@/components/ui/spinner";
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
@@ -113,11 +112,15 @@ export default function Page() {
     }
   };
 
+  const handleRetry = () => {
+    setVerifying(false);
+  };
+
   // Display the verification form to capture the OTP code
   if (verifying) {
     return (
       <>
-        <div className="bg-background flex min-h-dvh flex-col items-center justify-center gap-6 p-5 md:p-10">
+        <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-5 md:p-10">
           <div className="w-full max-w-sm">
             <div className="flex flex-col gap-6">
               <form onSubmit={handleVerify}>
@@ -167,7 +170,14 @@ export default function Page() {
                     </InputOTP>
                     <FieldDescription className="text-center">
                       Didn&apos;t receive the code?{" "}
-                      <Link href="/sign-up">Retry</Link>
+                      <Button
+                        type="button"
+                        size={"link"}
+                        onClick={handleRetry}
+                        variant={"link"}
+                      >
+                        Retry
+                      </Button>
                     </FieldDescription>
                   </Field>
                   <Field>
@@ -194,7 +204,7 @@ export default function Page() {
   // Display the initial sign-up form to capture the email and password
   return (
     <>
-      <div className="bg-background flex min-h-dvh flex-col items-center justify-center gap-6 p-5 md:p-10">
+      <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-5 md:p-10">
         <div className="w-full max-w-sm">
           <div className="flex flex-col gap-6">
             <form onSubmit={handleSubmit}>
