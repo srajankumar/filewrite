@@ -85,7 +85,7 @@ export default function UrlList() {
                 <Badge variant={"secondary"}>
                   {new Date(u.created_at).toLocaleString()}
                 </Badge>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-sm break-all">
                   {u.original_url}
                 </p>
                 <div className="flex items-center gap-1">
@@ -93,7 +93,7 @@ export default function UrlList() {
                   <Link
                     href={`${window.location.origin}/r/${u.short_code}`}
                     target="_blank"
-                    className="text-sm text-primary hover:underline underline-offset-4"
+                    className="text-sm text-primary hover:underline underline-offset-4 break-all"
                   >{`${window.location.origin}/r/${u.short_code}`}</Link>
                 </div>
               </div>
