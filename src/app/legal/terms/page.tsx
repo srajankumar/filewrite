@@ -57,7 +57,7 @@ export default function Terms() {
           You agree not to upload, share, or link to content that:
         </p>
 
-        <ol className="text-muted-foreground list-disc ml-10 grid gap-2">
+        <ul className="text-muted-foreground list-disc ml-10 grid gap-2">
           <li>
             Is illegal, promotes illegal activities, or violates any local,
             state, national, or international law.
@@ -72,7 +72,7 @@ export default function Terms() {
             designed to interrupt, destroy, or limit the functionality of any
             computer software or hardware.
           </li>
-        </ol>
+        </ul>
 
         <h2 className="text-lg font-semibold">
           3. Hosting and Storage (Supabase)
@@ -107,7 +107,7 @@ export default function Terms() {
           punitive damages, including loss of profits, data, or other intangible
           losses, resulting from:
         </p>
-        <ol className="text-muted-foreground list-disc ml-10 grid gap-2">
+        <ul className="text-muted-foreground list-disc ml-10 grid gap-2">
           <li>
             Your access to or use of, or inability to access or use, the
             Service.
@@ -122,7 +122,7 @@ export default function Terms() {
             <span className="text-primary font-semibold">Supabase Storage</span>
             .
           </li>
-        </ol>
+        </ul>
 
         <h2 className="text-lg font-semibold">6. Changes to Terms</h2>
         <p className="text-muted-foreground">
