@@ -20,10 +20,18 @@ export default function Header() {
             height={25}
           />
         </Link>
-        <Button variant={"ghost"} asChild>
+        <Button
+          className="md:text-sm text-xs tracking-wide"
+          variant={"ghost"}
+          asChild
+        >
           <Link href={"/dashboard/file-sharing"}>File Sharing</Link>
         </Button>
-        <Button variant={"ghost"} asChild>
+        <Button
+          className="md:text-sm text-xs tracking-wide"
+          variant={"ghost"}
+          asChild
+        >
           <Link href={"/dashboard/url-shortener"}>URL Shortener</Link>
         </Button>
       </div>

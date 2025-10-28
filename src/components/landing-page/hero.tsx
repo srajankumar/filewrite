@@ -1,8 +1,6 @@
 import React from "react";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import LoginOptions from "@/components/landing-page/login-options";
 import Link from "next/link";
 
 const Hero = () => {
@@ -16,24 +14,19 @@ const Hero = () => {
           Share files, shorten links, and co-create ideas - all in ones place.
         </p>
         <div className="flex gap-3">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Try for free</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <LoginOptions />
-            </DialogContent>
-          </Dialog>
           <SignedOut>
             <SignInButton>
-              <Button variant={"ghost"}>Sign in</Button>
+              <Button>Try for free</Button>
             </SignInButton>
           </SignedOut>
           <SignedIn>
-            <Button asChild variant={"secondary"}>
+            <Button asChild>
               <Link href={"/dashboard"}>Dashboard</Link>
             </Button>
           </SignedIn>
+          <Button asChild variant={"outline"}>
+            <Link href={"/textbox"}>Open Textbox</Link>
+          </Button>
         </div>
       </div>
     </section>

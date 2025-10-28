@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Copy, Trash2 } from "lucide-react";
+import { ArrowUpRight, Copy, Sparkle, Trash2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,14 +16,15 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 
-type File = {
+type URL = {
   id: number;
   created_at: string;
   short_code: string;
+  original_url: string;
 };
 
-export default function FileList() {
-  const [file, setFile] = useState<File[]>([]);
+export default function UrlList() {
+  const [url, setUrl] = useState<URL[]>([]);
   const [loading, setLoading] = useState(true);
 
   // clerk userId
@@ -33,25 +34,25 @@ export default function FileList() {
   const fetchData = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("file_links")
+      .from("links")
       .select("*")
       .eq("user_id", userId)
       .order("created_at", { ascending: true });
     if (error) console.error("Error fetching data:", error);
-    else setFile(data || []);
+    else setUrl(data || []);
     setLoading(false);
   };
 
   // delete record
   const deleteRecord = async (id: number) => {
     const { error } = await supabase
-      .from("file_links")
+      .from("links")
       .delete()
       .eq("id", id)
       .eq("user_id", userId);
     if (error) console.error("Error deleting record:", error);
     else {
-      setFile((prev) => prev.filter((f) => f.id !== id));
+      setUrl((prev) => prev.filter((u) => u.id !== id));
     }
   };
 
@@ -66,30 +67,41 @@ export default function FileList() {
 
   return (
     <div className="space-y-3 py-10">
-      <h2 className="font-semibold">Your Uploaded Files</h2>
-      {loading && <Skeleton className="flex rounded-xl w-full h-12" />}
-      {file.length === 0 && !loading && (
+      <h2 className="font-semibold">Your Saved Links</h2>
+      {loading && <Skeleton className="flex rounded-xl w-full h-24" />}
+      {url.length === 0 && !loading && (
         <div className="flex dark:bg-secondary/30 items-center justify-center gap-2 rounded-xl border px-4 py-2">
-          <p className="text-sm py-1.5 text-muted-foreground">
-            No files found.
-          </p>
+          <p className="text-sm py-7 text-muted-foreground">No links found.</p>
         </div>
       )}
-      {file.length != 0 && !loading && (
+      {url.length != 0 && !loading && (
         <ul className="space-y-3">
-          {file.map((f) => (
+          {url.map((u) => (
             <li
-              key={f.id}
+              key={u.id}
               className="flex dark:bg-secondary/30 items-center justify-between gap-2 rounded-xl border px-4 py-2"
             >
-              <Badge variant={"secondary"}>
-                {new Date(f.created_at).toLocaleString()}
-              </Badge>
+              <div className="space-y-2">
+                <Badge variant={"secondary"}>
+                  {new Date(u.created_at).toLocaleString()}
+                </Badge>
+                <p className="text-muted-foreground text-sm">
+                  {u.original_url}
+                </p>
+                <div className="flex items-center gap-1">
+                  <Sparkle className="text-yellow-500 w-4 h-4" />
+                  <Link
+                    href={`${window.location.origin}/r/${u.short_code}`}
+                    target="_blank"
+                    className="text-sm text-primary hover:underline underline-offset-4"
+                  >{`${window.location.origin}/r/${u.short_code}`}</Link>
+                </div>
+              </div>
               <div className="flex items-center gap-1">
                 <Button
                   variant={"ghost"}
                   size={"icon"}
-                  onClick={() => handleCopy(f.short_code)}
+                  onClick={() => handleCopy(u.short_code)}
                 >
                   <Copy />
                 </Button>
@@ -99,7 +111,7 @@ export default function FileList() {
                       <Button size={"icon"} asChild variant={"ghost"}>
                         <Link
                           target="_blank"
-                          href={`${window.location.origin}/f/${f.short_code}`}
+                          href={`${window.location.origin}/r/${u.short_code}`}
                           className="text-primary hover:text-primary"
                         >
                           <ArrowUpRight />
@@ -107,7 +119,7 @@ export default function FileList() {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="px-2 py-1 text-xs">
-                      {`${window.location.origin}/f/${f.short_code}`}
+                      {`${window.location.origin}/r/${u.short_code}`}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -116,7 +128,7 @@ export default function FileList() {
                   size={"icon"}
                   variant={"ghost"}
                   className="text-destructive hover:text-destructive"
-                  onClick={() => deleteRecord(f.id)}
+                  onClick={() => deleteRecord(u.id)}
                 >
                   <Trash2 />
                 </Button>

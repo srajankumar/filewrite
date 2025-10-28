@@ -22,8 +22,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, CheckIcon, CopyIcon } from "lucide-react";
-import { Spinner } from "./ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import Qr from "@/components/qr";
+
+import { useAuth } from "@clerk/nextjs";
 
 const durations: { label: string; value: number }[] = [
   { label: "1 Hour", value: 1 },
@@ -40,6 +42,9 @@ export default function UrlShortener() {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [copied, setCopied] = useState(false);
+
+  // clerk userId
+  const { userId } = useAuth();
 
   const handleCopy = () => {
     if (inputRef.current) {
@@ -64,6 +69,7 @@ export default function UrlShortener() {
         original_url: originalUrl,
         short_code: shortCode,
         expires_at: expiresAt.toISOString(),
+        user_id: userId,
       },
     ]);
 
@@ -90,7 +96,7 @@ export default function UrlShortener() {
             value={originalUrl}
             onChange={(e) => setOriginalUrl(e.target.value)}
           />
-          <Select
+          {/* <Select
             value={duration.toString()}
             onValueChange={(val) => setDuration(Number(val))}
           >
@@ -105,21 +111,27 @@ export default function UrlShortener() {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
         </div>
 
         <Button className="w-full" onClick={handleShorten} disabled={loading}>
           {loading ? "Generating" : "Generate"}
-          {loading && (
-            <Spinner/>
-          )}
+          {loading && <Spinner />}
         </Button>
       </div>
+
+      <p
+        aria-live="polite"
+        role="region"
+        className="text-muted-foreground mt-2 text-center text-xs"
+      >
+        Shorten your URL, share it anywhere
+      </p>
 
       {/* success UI */}
       {shortUrl && (
         <div className="mt-6 space-y-6">
-          <Qr link={shortUrl}/>
+          <Qr link={shortUrl} />
           <div className="flex gap-2">
             <div className="relative w-full">
               <Input
@@ -170,14 +182,6 @@ export default function UrlShortener() {
           </div>
         </div>
       )}
-
-      <p
-        aria-live="polite"
-        role="region"
-        className="text-muted-foreground mt-2 text-center text-xs"
-      >
-        Shorten your URL, share it anywhere
-      </p>
     </div>
   );
 }

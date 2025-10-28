@@ -1,7 +1,7 @@
 import React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import LoginOptions from "@/components/landing-page/login-options";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 const CTA = () => {
   return (
@@ -9,17 +9,17 @@ const CTA = () => {
       <h2 className="md:text-2xl text-xl font-semibold text-center mb-2">
         Ready to simplify your sharing?
       </h2>
-      <p className="text-indigo-100 mb-8 text-sm">
-        Get started for free - no signup required.
-      </p>
-      <Dialog>
-        <DialogTrigger asChild>
+      <p className="text-indigo-100 mb-8 text-sm">Get started for free.</p>
+      <SignedOut>
+        <SignInButton>
           <Button variant={"cta"}>Try for free</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <LoginOptions />
-        </DialogContent>
-      </Dialog>
+        </SignInButton>
+      </SignedOut>
+      <SignedIn>
+        <Button variant={"cta"} asChild>
+          <Link href={"/dashboard"}>Dashboard</Link>
+        </Button>
+      </SignedIn>
     </section>
   );
 };

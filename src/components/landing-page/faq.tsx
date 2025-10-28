@@ -26,15 +26,7 @@ export default function FAQ() {
         <AccordionItem value="item-2">
           <AccordionTrigger>Is Filewrite free to use?</AccordionTrigger>
           <AccordionContent>
-            Yes. Filewrite is completely free and runs on Render’s free tier.
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="item-3">
-          <AccordionTrigger>Do I need an account to use it?</AccordionTrigger>
-          <AccordionContent>
-            No. You can instantly create a shareable link for the text box or
-            canvas without signing up.
+            Yes. Filewrite is completely free to all users.
           </AccordionContent>
         </AccordionItem>
       </Accordion>

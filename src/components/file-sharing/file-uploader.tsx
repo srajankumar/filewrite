@@ -125,7 +125,7 @@ export default function FileUploader() {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full mx-auto">
+    <div className="flex flex-col gap-3 w-full mx-auto">
       <div
         role="button"
         onClick={openFileDialog}
@@ -156,7 +156,7 @@ export default function FileUploader() {
 
       {/* File list */}
       {fileObj && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div
             key={files[0].id}
             className="flex items-center justify-between gap-2 rounded-xl border px-4 py-2"
