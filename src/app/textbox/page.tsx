@@ -186,7 +186,7 @@ export default function Textbox() {
         style={{ lineHeight: "1.75" }}
         disabled={false}
       />
-      
+
       <div className="fixed bottom-10 md:right-10 right-5 bg-background shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">
         <button
           onClick={async () => {

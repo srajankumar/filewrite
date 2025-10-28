@@ -1,9 +1,8 @@
 import React from "react";
-import { Clock, Globe } from "lucide-react";
+import { Clock } from "lucide-react";
 import type { Metadata } from "next";
 import Header from "@/components/header";
 import Footer from "@/components/landing-page/footer";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",

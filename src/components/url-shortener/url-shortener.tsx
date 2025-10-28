@@ -6,13 +6,13 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import {
   Tooltip,
   TooltipContent,
@@ -27,13 +27,13 @@ import Qr from "@/components/qr";
 
 import { useAuth } from "@clerk/nextjs";
 
-const durations: { label: string; value: number }[] = [
-  { label: "1 Hour", value: 1 },
-  { label: "3 Hours", value: 3 },
-  { label: "5 Hours", value: 5 },
-  { label: "10 Hours", value: 10 },
-  { label: "1 Day", value: 24 },
-];
+// const durations: { label: string; value: number }[] = [
+//   { label: "1 Hour", value: 1 },
+//   { label: "3 Hours", value: 3 },
+//   { label: "5 Hours", value: 5 },
+//   { label: "10 Hours", value: 10 },
+//   { label: "1 Day", value: 24 },
+// ];
 
 export default function UrlShortener() {
   const [originalUrl, setOriginalUrl] = useState("");
