@@ -7,7 +7,6 @@ import { SignOutButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { LogOut } from "lucide-react";
-import { Separator } from "../ui/separator";
 
 export default function Header() {
   return (
