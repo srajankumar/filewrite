@@ -17,7 +17,7 @@ const CTA = () => {
       </SignedOut>
       <SignedIn>
         <Button variant={"cta"} asChild>
-          <Link href={"/dashboard"}>Dashboard</Link>
+          <Link href={"/dashboard/file-sharing"}>Dashboard</Link>
         </Button>
       </SignedIn>
     </section>

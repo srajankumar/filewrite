@@ -1,6 +1,11 @@
+import React from "react";
 import FileList from "@/components/file-sharing/file-list";
 import FileUploader from "@/components/file-sharing/file-uploader";
-import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "File Sharing",
+};
 
 export default function FileSharing() {
   return (

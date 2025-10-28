@@ -31,7 +31,7 @@ export default function Page() {
   const [loading, setLoading] = React.useState(false);
 
   if (isSignedIn) {
-    router.push("/dashboard");
+    router.push("/dashboard/file-sharing");
   }
 
   // Handle submission of the sign-up form
@@ -240,7 +240,6 @@ export default function Page() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
                     required
                     value={emailAddress}
                     disabled={loading}
@@ -253,7 +252,6 @@ export default function Page() {
                     id="password"
                     type="password"
                     name="password"
-                    placeholder="*********"
                     required
                     value={password}
                     disabled={loading}

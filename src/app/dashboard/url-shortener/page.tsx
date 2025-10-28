@@ -1,6 +1,11 @@
+import React from "react";
 import UrlList from "@/components/url-shortener/url-list";
 import UrlShortener from "@/components/url-shortener/url-shortener";
-import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "URL Shortener",
+};
 
 export default function URLShortener() {
   return (

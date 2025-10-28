@@ -12,9 +12,9 @@ export default function Page() {
     <main className="min-h-dvh max-w-xl mx-auto px-5">
       <Header />
       <Hero />
-      <Feature/>
+      <Feature />
       <FAQ />
-      <CTA/>
+      <CTA />
       <Footer />
     </main>
   );

@@ -21,7 +21,7 @@ const Hero = () => {
           </SignedOut>
           <SignedIn>
             <Button asChild>
-              <Link href={"/dashboard"}>Dashboard</Link>
+              <Link href={"/dashboard/file-sharing"}>Dashboard</Link>
             </Button>
           </SignedIn>
           <Button asChild variant={"outline"}>

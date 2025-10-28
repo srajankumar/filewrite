@@ -25,7 +25,7 @@ export default function SignInForm() {
   const router = useRouter();
 
   if (isSignedIn) {
-    router.push("/dashboard");
+    router.push("/dashboard/file-sharing");
   }
 
   // Handle the submission of the sign-in form
@@ -112,7 +112,6 @@ export default function SignInForm() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
                     required
                     value={email}
                     disabled={loading}
@@ -125,7 +124,6 @@ export default function SignInForm() {
                     id="password"
                     type="password"
                     name="password"
-                    placeholder="*********"
                     required
                     value={password}
                     disabled={loading}
