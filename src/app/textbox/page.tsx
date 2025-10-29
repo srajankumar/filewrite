@@ -44,13 +44,6 @@ export default function Textbox() {
       }))
     );
 
-    socket.on("cursor-change", ({ id, cursorPosition }) =>
-      setUsers((prev) => ({
-        ...prev,
-        [id]: { ...prev[id], cursorPosition },
-      }))
-    );
-
     socket.on("user-left", ({ id }) =>
       setUsers((prev) => {
         const updated = { ...prev };
@@ -66,102 +59,12 @@ export default function Textbox() {
       socket.off("cursor-change");
       socket.off("user-left");
     };
-  }, []);
-
-  useEffect(() => {
-    // Remove all listeners before setting up new ones
-    socket.off("init");
-    socket.off("text-change");
-    socket.off("user-joined");
-    socket.off("cursor-change");
-    socket.off("user-left");
-
-    if (joinedRoom) {
-      // Only listen to room events
-      socket.on("init", (payload) => {
-        setMyId(payload.id);
-        setText(payload.text);
-        setUsers(payload.users);
-      });
-      socket.on("room-text-change", (newText) => setText(newText));
-      socket.on("room-user-joined", ({ id, username }) =>
-        setUsers((prev) => ({
-          ...prev,
-          [id]: { username, color: "", cursorPosition: 0 },
-        }))
-      );
-      socket.on("room-cursor-change", ({ id, cursorPosition }) =>
-        setUsers((prev) => ({
-          ...prev,
-          [id]: { ...prev[id], cursorPosition },
-        }))
-      );
-      socket.on("room-user-left", ({ id }) =>
-        setUsers((prev) => {
-          const updated = { ...prev };
-          delete updated[id];
-          return updated;
-        })
-      );
-    } else {
-      // Only listen to global events
-      socket.on("init", (payload) => {
-        setMyId(payload.id);
-        setText(payload.text);
-        setUsers(payload.users);
-      });
-      socket.on("text-change", (newText) => setText(newText));
-      socket.on("user-joined", ({ id, username, color }) =>
-        setUsers((prev) => ({
-          ...prev,
-          [id]: { username, color, cursorPosition: 0 },
-        }))
-      );
-      socket.on("cursor-change", ({ id, cursorPosition }) =>
-        setUsers((prev) => ({
-          ...prev,
-          [id]: { ...prev[id], cursorPosition },
-        }))
-      );
-      socket.on("user-left", ({ id }) =>
-        setUsers((prev) => {
-          const updated = { ...prev };
-          delete updated[id];
-          return updated;
-        })
-      );
-    }
-
-    return () => {
-      socket.off("init");
-      socket.off("text-change");
-      socket.off("user-joined");
-      socket.off("cursor-change");
-      socket.off("user-left");
-      socket.off("room-text-change");
-      socket.off("room-user-joined");
-      socket.off("room-cursor-change");
-      socket.off("room-user-left");
-    };
-  }, [joinedRoom]);
+  }, [users]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     setText(newText);
-    if (joinedRoom) {
-      socket.emit("room-text-change", newText);
-    } else {
-      socket.emit("text-change", newText);
-    }
-  };
-
-  const handleCursor = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    const position = (e.target as HTMLTextAreaElement).selectionStart;
-    if (joinedRoom) {
-      socket.emit("room-cursor-change", position);
-    } else {
-      socket.emit("cursor-change", position);
-    }
+    socket.emit("text-change", newText);
   };
 
   return (
@@ -181,7 +84,6 @@ export default function Textbox() {
         ref={textareaRef}
         value={text}
         onChange={handleChange}
-        onSelect={handleCursor}
         className="min-h-[10rem] my-5"
         style={{ lineHeight: "1.75" }}
         disabled={false}
