@@ -13,7 +13,7 @@ const Hero = () => {
         <p className="text-muted-foreground mb-6 max-w-prose">
           Share files, shorten links, and co-create ideas - all in ones place.
         </p>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <SignedOut>
             <SignInButton>
               <Button>Try for free</Button>

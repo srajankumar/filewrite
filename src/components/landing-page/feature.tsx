@@ -1,40 +1,47 @@
-import { FolderOpen, Paperclip, SquareMousePointer } from 'lucide-react'
-import React from 'react'
+import { Code, FolderOpen, Paperclip, SquareMousePointer } from "lucide-react";
+import React from "react";
 
 const Feature = () => {
   const features = [
     {
       title: "File Sharing",
       description: "Share files instatntly.",
-      icon: <FolderOpen />
+      icon: <FolderOpen />,
     },
     {
       title: "URL Shortener",
       description: "Turn long links into short.",
-      icon: <Paperclip />
+      icon: <Paperclip />,
     },
     {
       title: "Collaborative Textbox",
       description: "Write together instantly.",
-      icon: <SquareMousePointer/>
+      icon: <SquareMousePointer />,
     },
-  ]
-  
+    {
+      title: "MDX Editor",
+      description: "Create and render MDX.",
+      icon: <Code />,
+    },
+  ];
+
   return (
-    <section className='md:py-20 py-16 grid md:grid-cols-3 grid-cols-2 gap-6'>
+    <section className="md:py-20 py-16 grid grid-cols-2 gap-x-6 gap-y-14">
       {features.map((feature, index) => (
-        <div key={index} className='grid gap-2'>
-          <div className='text-primary p-2 border-2 border-primary/30 shadow-sm rounded-md bg-primary/10 w-fit h-fit'>
+        <div key={index} className="grid gap-2">
+          <div className="text-primary p-2 border-2 border-primary/30 shadow-sm rounded-md bg-primary/10 w-fit h-fit">
             {feature.icon}
           </div>
           <div>
-            <h2 className='font-semibold'>{feature.title}</h2>
-            <p className='text-sm text-muted-foreground'>{feature.description}</p>
+            <h2 className="font-semibold">{feature.title}</h2>
+            <p className="text-sm text-muted-foreground">
+              {feature.description}
+            </p>
           </div>
         </div>
       ))}
     </section>
-  )
-}
+  );
+};
 
-export default Feature
+export default Feature;
