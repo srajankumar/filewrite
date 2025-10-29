@@ -85,7 +85,8 @@ export default function Textbox() {
         onChange={handleChange}
         className="min-h-[10rem] my-5"
         style={{ lineHeight: "1.75" }}
-        disabled={false}
+        autoFocus
+        placeholder="Type here"
       />
 
       <div className="fixed bottom-10 md:right-10 right-5 bg-background shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">

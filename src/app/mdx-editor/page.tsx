@@ -38,6 +38,7 @@ export default function MDXEditor() {
                 className=""
                 onChange={(e) => setSource(e.target.value)}
                 autoFocus
+                style={{ lineHeight: "1.75" }}
               />
             </div>
           </TabsContent>
