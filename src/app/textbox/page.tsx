@@ -25,7 +25,6 @@ export default function Textbox() {
   const [text, setText] = useState("");
   const [users, setUsers] = useState<Record<string, User>>({});
   const [myId, setMyId] = useState("");
-  const [joinedRoom, setJoinedRoom] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -59,7 +58,7 @@ export default function Textbox() {
       socket.off("cursor-change");
       socket.off("user-left");
     };
-  }, [users]);
+  }, [socket]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
@@ -105,13 +104,10 @@ export default function Textbox() {
             try {
               const clipboardText = await navigator.clipboard.readText();
               setText(clipboardText);
-              if (joinedRoom) {
-                socket.emit("room-text-change", clipboardText);
-              } else {
-                socket.emit("text-change", clipboardText);
-              }
+              socket.emit("text-change", clipboardText);
               toast.success("Pasted from clipboard!");
             } catch (err) {
+              console.error(err);
               toast.error("Failed to paste from clipboard.");
             }
           }}
@@ -124,11 +120,7 @@ export default function Textbox() {
           className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
           onClick={() => {
             setText("");
-            if (joinedRoom) {
-              socket.emit("room-text-change", "");
-            } else {
-              socket.emit("text-change", "");
-            }
+            socket.emit("text-change", "");
           }}
           type="button"
         >
