@@ -36,7 +36,7 @@ function App() {
     };
   }, []);
 
-  const handleTextChange = (e) => {
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     setText(newText);
     socket.emit("textChange", newText);
