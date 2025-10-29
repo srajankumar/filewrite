@@ -9,13 +9,13 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://filewrite.vercel.app",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
 
 let sharedText = "";
-let users = {}; // socket.id -> username
+let users = {};
 
 function generateUsername() {
   const names = ["Alex", "Jordan", "Taylor", "Riley", "Morgan", "Casey"];
@@ -25,7 +25,7 @@ function generateUsername() {
 }
 
 io.on("connection", (socket) => {
-  console.log("✅ User connected:", socket.id);
+  console.log("User connected:", socket.id);
 
   // Create random username for this socket
   const username = generateUsername();
@@ -48,12 +48,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("❌ Disconnected:", socket.id);
+    console.log("Disconnected:", socket.id);
     delete users[socket.id];
     io.emit("userListUpdate", Object.values(users));
   });
 });
 
-server.listen(3001, () => {
-  console.log("🚀 Server running at http://localhost:3001");
+app.get("/", (req, res) => {
+  res.send("Hello Filewrite Developer!");
 });
+
+const PORT = process.env.PORT || 4000;
+
+server.listen(PORT, () =>
+  console.log(`Server running at http://localhost:${PORT}`)
+);

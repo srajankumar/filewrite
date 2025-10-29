@@ -35,9 +35,9 @@ export default function MDXEditor() {
               <Textarea
                 placeholder="Type here"
                 value={source}
-                className=""
                 onChange={(e) => setSource(e.target.value)}
                 autoFocus
+                className="min-h-[10rem] my-5"
                 style={{ lineHeight: "1.75" }}
               />
             </div>

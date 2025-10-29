@@ -1,69 +1,55 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
-import Header from "@/components/header";
-import { BrushCleaning, ClipboardPaste, CopyIcon } from "lucide-react";
 
-type User = {
-  username: string;
-  color: string;
-  cursorPosition: number;
-};
+import React, { useEffect, useRef, useState } from "react";
+import Header from "@/components/header";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { BrushCleaning, ClipboardPaste, CopyIcon } from "lucide-react";
+import { io } from "socket.io-client";
+import { toast } from "sonner";
 
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
-if (!serverUrl) {
-  toast.error(
-    "NEXT_PUBLIC_SERVER_URL is not defined in environment variables."
-  );
-}
+
 const socket = io(serverUrl);
 
-export default function Textbox() {
+function App() {
   const [text, setText] = useState("");
-  const [users, setUsers] = useState<Record<string, User>>({});
-  const [myId, setMyId] = useState("");
+  const [users, setUsers] = useState([]);
+  const [username, setUsername] = useState("");
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    socket.on("init", (payload) => {
-      setMyId(payload.id);
-      setText(payload.text);
-      setUsers(payload.users);
+    // Listen for initial data
+    socket.on("initialData", (data) => {
+      //   console.log("Initial data received:", data);
+      setText(data.text);
+      setUsers(data.users);
+      setUsername(data.username);
     });
 
-    socket.on("text-change", (newText) => setText(newText));
+    // Listen for text updates
+    socket.on("textChange", (newText) => {
+      setText(newText);
+    });
 
-    socket.on("user-joined", ({ id, username, color }) =>
-      setUsers((prev) => ({
-        ...prev,
-        [id]: { username, color, cursorPosition: 0 },
-      }))
-    );
-
-    socket.on("user-left", ({ id }) =>
-      setUsers((prev) => {
-        const updated = { ...prev };
-        delete updated[id];
-        return updated;
-      })
-    );
+    // Listen for user list updates
+    socket.on("userListUpdate", (list) => {
+      //   console.log("Updated user list:", list);
+      setUsers(list);
+    });
 
     return () => {
-      socket.off("init");
-      socket.off("text-change");
-      socket.off("user-joined");
-      socket.off("cursor-change");
-      socket.off("user-left");
+      socket.off("initialData");
+      socket.off("textChange");
+      socket.off("userListUpdate");
     };
-  }, [socket]);
+  }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     setText(newText);
-    socket.emit("text-change", newText);
+    socket.emit("textChange", newText);
   };
 
   return (
@@ -71,24 +57,25 @@ export default function Textbox() {
       <Header />
       {users && (
         <ul className="flex flex-wrap gap-2">
-          {Object.entries(users).map(([id, user]) => (
-            <Badge key={id} variant={id === myId ? "default" : "secondary"}>
-              {user.username} {id === myId && "(You)"}
+          {users.map((user) => (
+            <Badge
+              key={user}
+              variant={user === username ? "default" : "secondary"}
+            >
+              {user} {user === username && "(You)"}
             </Badge>
           ))}
         </ul>
       )}
-
       <Textarea
         ref={textareaRef}
         value={text}
-        onChange={handleChange}
+        onChange={handleTextChange}
         className="min-h-[10rem] my-5"
         style={{ lineHeight: "1.75" }}
         autoFocus
         placeholder="Type here"
       />
-
       <div className="fixed bottom-10 md:right-10 right-5 bg-background shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">
         <button
           onClick={async () => {
@@ -131,3 +118,5 @@ export default function Textbox() {
     </main>
   );
 }
+
+export default App;
