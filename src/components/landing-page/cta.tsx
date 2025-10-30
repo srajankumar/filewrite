@@ -1,7 +1,6 @@
 import React from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 
 const CTA = () => {
   return (
@@ -10,16 +9,11 @@ const CTA = () => {
         Ready to simplify your sharing?
       </h2>
       <p className="text-indigo-100 mb-8 text-sm">Get started for free.</p>
-      <SignedOut>
-        <SignInButton>
-          <Button variant={"cta"}>Try for free</Button>
-        </SignInButton>
-      </SignedOut>
-      <SignedIn>
-        <Button variant={"cta"} asChild>
-          <Link href={"/dashboard/file-sharing"}>Dashboard</Link>
+      <SignInButton>
+        <Button variant={"cta"} className="cursor-pointer">
+          Try for free
         </Button>
-      </SignedIn>
+      </SignInButton>
     </section>
   );
 };

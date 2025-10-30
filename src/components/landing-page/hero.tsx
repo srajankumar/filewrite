@@ -1,7 +1,6 @@
 import React from "react";
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -15,7 +14,7 @@ const Hero = () => {
         </p>
         <div className="flex gap-3 flex-wrap">
           <SignInButton>
-            <Button>Try for free</Button>
+            <Button className="cursor-pointer">Try for free</Button>
           </SignInButton>
         </div>
       </div>

@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function SignInForm() {
   const { isSignedIn } = useAuth();
@@ -55,24 +56,29 @@ export default function SignInForm() {
               console.log(session?.currentTask);
               return;
             }
-
             router.push("/dashboard");
           },
         });
+        setPassword("");
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
+        setPassword("");
         console.error(JSON.stringify(signInAttempt, null, 2));
+        toast.error("Sign-in attempt not complete. Please try again.");
       }
     } catch (err) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
+      setPassword("");
       setLoading(false);
+      toast.error(
+        "Failed to sign in. Please check your credentials and try again."
+      );
       console.error(JSON.stringify(err, null, 2));
     }
   };
 
-  // Display a form to capture the user's email and password
   return (
     <>
       <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-5 md:p-10">

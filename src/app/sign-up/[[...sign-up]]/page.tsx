@@ -19,6 +19,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { toast } from "sonner";
 
 export default function Page() {
   const { isSignedIn } = useAuth();
@@ -29,7 +30,7 @@ export default function Page() {
   const [code, setCode] = React.useState("");
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
-
+  const [verificationLoading, setVerificatoinLoading] = React.useState(false);
   if (isSignedIn) {
     router.push("/file-sharing");
   }
@@ -57,11 +58,14 @@ export default function Page() {
       // Set 'verifying' true to display second form
       // and capture the OTP code
       setVerifying(true);
+      setPassword("");
     } catch (err) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
       setLoading(false);
+      setPassword("");
+      toast.error("Failed to sign up. Please try again.");
     }
   };
 
@@ -69,7 +73,7 @@ export default function Page() {
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setLoading(true);
+    setVerificatoinLoading(true);
 
     if (!isLoaded) return <div>Loading...</div>;
 
@@ -96,23 +100,28 @@ export default function Page() {
             router.push("/");
           },
         });
+        setCode("");
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
         console.error("Sign-up attempt not complete:", signUpAttempt);
         console.error("Sign-up attempt status:", signUpAttempt.status);
+        setVerificatoinLoading(false);
+        toast.error("Verification failed. Please try again.");
       }
-      setLoading(false);
     } catch (err) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
-      setLoading(false);
+      setVerificatoinLoading(false);
+      toast.error("Verification failed. Please try again.");
     }
   };
 
   const handleRetry = () => {
     setVerifying(false);
+    setLoading(false);
+    setCode("");
   };
 
   // Display the verification form to capture the OTP code
@@ -149,7 +158,7 @@ export default function Page() {
                       Verification code
                     </FieldLabel>
                     <InputOTP
-                      disabled={loading}
+                      disabled={verificationLoading}
                       value={code}
                       id="code"
                       name="code"
@@ -180,8 +189,8 @@ export default function Page() {
                     </FieldDescription>
                   </Field>
                   <Field>
-                    <Button disabled={loading} type="submit">
-                      {loading ? (
+                    <Button disabled={verificationLoading} type="submit">
+                      {verificationLoading ? (
                         <>
                           Loading
                           <Spinner />

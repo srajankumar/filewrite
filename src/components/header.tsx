@@ -59,9 +59,9 @@ export default function Header() {
           size={"icon"}
           asChild
         >
-          <Link href={"/collaborative-textbox"}>
+          <a href={"/collaborative-textbox"}>
             <SquareMousePointer />
-          </Link>
+          </a>
         </Button>
         <Button
           className="md:text-sm text-xs tracking-wide"
@@ -79,7 +79,7 @@ export default function Header() {
             <Button
               size={"icon"}
               variant={"ghost"}
-              className="text-destructive hover:text-destructive"
+              className="cursor-pointer text-destructive hover:text-destructive"
             >
               <LogOut />
             </Button>

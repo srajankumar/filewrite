@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { supabase } from "@/lib/supabaseClient";
 import { FileDown } from "lucide-react";
 import Image from "next/image";
@@ -30,7 +29,7 @@ export default async function FilePage({
   }
 
   return (
-    <main className="min-h-dvh max-w-xl mx-auto px-5 flex flex-col justify-center items-center gap-6">
+    <main className="min-h-svh max-w-xl mx-auto px-5 flex flex-col justify-center items-center gap-6">
       <Link
         href={"https://filewrite.vercel.app"}
         target="_blank"
@@ -39,15 +38,15 @@ export default async function FilePage({
         <Image
           src={"/assets/logo-transparant.png"}
           alt="Filewrite"
-          width={40}
-          height={40}
+          width={25}
+          height={25}
         />
-        <h1 className="text-2xl font-semibold">Filewrite</h1>
+        <h1 className="text-xl font-semibold">Filewrite</h1>
       </Link>
-      <Card className="px-6 w-full max-w-lg flex flex-col justify-center items-center">
+      <div className="flex flex-col max-w-md w-full dark:bg-secondary/30 items-center justify-between gap-2 rounded-xl border p-4">
         <div className="flex flex-col items-center justify-center text-center">
-          <div className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border">
-            <FileDown className="size-4 opacity-60" />
+          <div className="mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border">
+            <FileDown className="size-4 text-muted-foreground" />
           </div>
           <p className="mb-1.5 text-sm font-medium">
             Click below to download this file
@@ -56,7 +55,7 @@ export default async function FilePage({
         <Link className="w-full" href={data.file_url} download={true}>
           <Button className="w-full cursor-pointer">Download Now</Button>
         </Link>
-      </Card>
+      </div>
     </main>
   );
 }
