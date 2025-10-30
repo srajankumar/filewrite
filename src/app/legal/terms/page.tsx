@@ -12,7 +12,7 @@ export default function Terms() {
   return (
     <main className="min-h-dvh max-w-xl mx-auto px-5">
       <Header />
-      <div className="grid gap-5 pb-20">
+      <div className="grid gap-5 pb-10">
         <div className="py-5 grid gap-2">
           <h1 className="font-semibold text-2xl">Terms & Conditions</h1>
           <div className="flex items-center gap-2 w-full text-xs text-muted-foreground">

@@ -14,6 +14,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
 type File = {
@@ -46,14 +57,17 @@ export default function FileList() {
   }, [userId]);
 
   // delete record
-  const deleteRecord = async (id: number) => {
+  const deleteFile = async (id: number) => {
     const { error } = await supabase
       .from("file_links")
       .delete()
       .eq("id", id)
       .eq("user_id", userId);
-    if (error) console.error("Error deleting record:", error);
-    else {
+    if (error) {
+      console.error("Error deleting record:", error);
+      toast.error("Failed to delete file. Please try again.");
+    } else {
+      toast.success("File deleted successfully!");
       setFile((prev) => prev.filter((f) => f.id !== id));
     }
   };
@@ -110,15 +124,41 @@ export default function FileList() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-
-                <Button
-                  size={"icon"}
-                  variant={"ghost"}
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => deleteRecord(f.id)}
-                >
-                  <Trash2 />
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button
+                      size={"icon"}
+                      variant={"ghost"}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <Trash2 />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your file.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </AlertDialogCancel>
+                      <AlertDialogAction asChild>
+                        <Button
+                          variant={"destructive"}
+                          onClick={() => deleteFile(f.id)}
+                        >
+                          Continue
+                        </Button>
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </li>
           ))}

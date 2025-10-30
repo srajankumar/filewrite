@@ -14,6 +14,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
 type URL = {
@@ -47,14 +58,17 @@ export default function UrlList() {
   }, [userId]);
 
   // delete record
-  const deleteRecord = async (id: number) => {
+  const deleteLink = async (id: number) => {
     const { error } = await supabase
       .from("links")
       .delete()
       .eq("id", id)
       .eq("user_id", userId);
-    if (error) console.error("Error deleting record:", error);
-    else {
+    if (error) {
+      console.error("Error deleting record:", error);
+      toast.error("Failed to delete the link. Please try again.");
+    } else {
+      toast.success("File deleted successfully!");
       setUrl((prev) => prev.filter((u) => u.id !== id));
     }
   };
@@ -122,15 +136,41 @@ export default function UrlList() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-
-                <Button
-                  size={"icon"}
-                  variant={"ghost"}
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => deleteRecord(u.id)}
-                >
-                  <Trash2 />
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button
+                      size={"icon"}
+                      variant={"ghost"}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <Trash2 />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your URL.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </AlertDialogCancel>
+                      <AlertDialogAction asChild>
+                        <Button
+                          variant={"destructive"}
+                          onClick={() => deleteLink(u.id)}
+                        >
+                          Delete
+                        </Button>
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </li>
           ))}
