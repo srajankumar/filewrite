@@ -14,6 +14,12 @@ import {
   Paperclip,
   SquareMousePointer,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Header() {
   const pathname = usePathname();
@@ -28,64 +34,96 @@ export default function Header() {
           height={25}
         />
       </Link>
-      <div className="flex items-center gap-2">
-        <SignedIn>
-          <Button
-            className="md:text-sm text-xs tracking-wide"
-            variant={pathname == "/file-sharing" ? "secondary" : "ghost"}
-            size={"icon"}
-            asChild
-          >
-            <Link href={"/file-sharing"}>
-              <FolderOpen />
-            </Link>
-          </Button>
-        </SignedIn>
-        <SignedIn>
-          <Button
-            className="md:text-sm text-xs tracking-wide"
-            variant={pathname == "/url-shortener" ? "secondary" : "ghost"}
-            size={"icon"}
-            asChild
-          >
-            <Link href={"/url-shortener"}>
-              <Paperclip />
-            </Link>
-          </Button>
-        </SignedIn>
-        <Button
-          className="md:text-sm text-xs tracking-wide"
-          variant={pathname == "/collaborative-textbox" ? "secondary" : "ghost"}
-          size={"icon"}
-          asChild
-        >
-          <a href={"/collaborative-textbox"}>
-            <SquareMousePointer />
-          </a>
-        </Button>
-        <Button
-          className="md:text-sm text-xs tracking-wide"
-          variant={pathname == "/mdx-editor" ? "secondary" : "ghost"}
-          size={"icon"}
-          asChild
-        >
-          <Link href={"/mdx-editor"}>
-            <Code />
-          </Link>
-        </Button>
-        <ModeToggle />
-        <SignedIn>
-          <SignOutButton>
-            <Button
-              size={"icon"}
-              variant={"ghost"}
-              className="cursor-pointer text-destructive hover:text-destructive"
-            >
-              <LogOut />
-            </Button>
-          </SignOutButton>
-        </SignedIn>
-      </div>
+      <TooltipProvider delayDuration={0}>
+        <div className="flex items-center gap-2">
+          <SignedIn>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className="md:text-sm text-xs tracking-wide"
+                  variant={pathname == "/file-sharing" ? "secondary" : "ghost"}
+                  size={"icon"}
+                  asChild
+                >
+                  <Link href={"/file-sharing"}>
+                    <FolderOpen />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="px-2 py-1 text-xs">
+                File Sharing
+              </TooltipContent>
+            </Tooltip>
+          </SignedIn>
+          <SignedIn>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className="md:text-sm text-xs tracking-wide"
+                  variant={pathname == "/url-shortener" ? "secondary" : "ghost"}
+                  size={"icon"}
+                  asChild
+                >
+                  <Link href={"/url-shortener"}>
+                    <Paperclip />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="px-2 py-1 text-xs">
+                URL Shortener
+              </TooltipContent>
+            </Tooltip>
+          </SignedIn>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className="md:text-sm text-xs tracking-wide"
+                variant={
+                  pathname == "/collaborative-textbox" ? "secondary" : "ghost"
+                }
+                size={"icon"}
+                asChild
+              >
+                <a href={"/collaborative-textbox"}>
+                  <SquareMousePointer />
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="px-2 py-1 text-xs">
+              Collaborative Textbox
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className="md:text-sm text-xs tracking-wide"
+                variant={pathname == "/mdx-editor" ? "secondary" : "ghost"}
+                size={"icon"}
+                asChild
+              >
+                <Link href={"/mdx-editor"}>
+                  <Code />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="px-2 py-1 text-xs">
+              MDX Editor
+            </TooltipContent>
+          </Tooltip>
+          <ModeToggle />
+          <SignedIn>
+            <SignOutButton>
+              <Button
+                size={"icon"}
+                variant={"ghost"}
+                className="cursor-pointer text-destructive hover:text-destructive"
+              >
+                <LogOut />
+              </Button>
+            </SignOutButton>
+          </SignedIn>
+        </div>
+      </TooltipProvider>
     </header>
   );
 }
