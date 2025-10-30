@@ -7,7 +7,16 @@ import Footer from "@/components/landing-page/footer";
 import Feature from "@/components/landing-page/feature";
 import CTA from "@/components/landing-page/cta";
 
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+
 export default function Page() {
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+
+  if (isSignedIn) {
+    router.push("/file-sharing");
+  }
   return (
     <main className="min-h-dvh max-w-xl mx-auto px-5">
       <Header />

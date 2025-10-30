@@ -25,7 +25,7 @@ export default function SignInForm() {
   const router = useRouter();
 
   if (isSignedIn) {
-    router.push("/dashboard/file-sharing");
+    router.push("/file-sharing");
   }
 
   // Handle the submission of the sign-in form

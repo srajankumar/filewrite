@@ -14,22 +14,9 @@ const Hero = () => {
           Share files, shorten links, and co-create ideas - all in ones place.
         </p>
         <div className="flex gap-3 flex-wrap">
-          <SignedOut>
-            <SignInButton>
-              <Button>Try for free</Button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <Button asChild>
-              <Link href={"/dashboard/file-sharing"}>Dashboard</Link>
-            </Button>
-          </SignedIn>
-          <Button asChild variant={"outline"}>
-            <a href={"/collaborative-textbox"}>Open Textbox</a>
-          </Button>
-          <Button asChild variant={"outline"}>
-            <Link href={"/mdx-editor"}>MDX Editor</Link>
-          </Button>
+          <SignInButton>
+            <Button>Try for free</Button>
+          </SignInButton>
         </div>
       </div>
     </section>

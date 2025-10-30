@@ -31,7 +31,7 @@ export default function Page() {
   const [loading, setLoading] = React.useState(false);
 
   if (isSignedIn) {
-    router.push("/dashboard/file-sharing");
+    router.push("/file-sharing");
   }
 
   // Handle submission of the sign-up form

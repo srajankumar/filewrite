@@ -7,46 +7,72 @@ import { usePathname } from "next/navigation";
 import { SignOutButton, SignedIn } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
-import { LogOut } from "lucide-react";
+import {
+  Code,
+  FolderOpen,
+  LogOut,
+  Paperclip,
+  SquareMousePointer,
+} from "lucide-react";
 
 export default function Header() {
   const pathname = usePathname();
 
   return (
     <header className="flex items-center justify-between py-10">
-      <div className="flex items-center gap-1">
-        <Link href={"/"} className="flex items-center gap-3 mr-2">
-          <Image
-            src={"/assets/logo-transparant.png"}
-            alt="Filewrite"
-            width={25}
-            height={25}
-          />
-        </Link>
+      <Link href={"/"} className="flex items-center gap-3">
+        <Image
+          src={"/assets/logo-transparant.png"}
+          alt="Filewrite"
+          width={25}
+          height={25}
+        />
+      </Link>
+      <div className="flex items-center gap-2">
         <SignedIn>
           <Button
             className="md:text-sm text-xs tracking-wide"
-            variant={
-              pathname == "/dashboard/file-sharing" ? "secondary" : "ghost"
-            }
+            variant={pathname == "/file-sharing" ? "secondary" : "ghost"}
+            size={"icon"}
             asChild
           >
-            <Link href={"/dashboard/file-sharing"}>File Sharing</Link>
+            <Link href={"/file-sharing"}>
+              <FolderOpen />
+            </Link>
           </Button>
         </SignedIn>
         <SignedIn>
           <Button
             className="md:text-sm text-xs tracking-wide"
-            variant={
-              pathname == "/dashboard/url-shortener" ? "secondary" : "ghost"
-            }
+            variant={pathname == "/url-shortener" ? "secondary" : "ghost"}
+            size={"icon"}
             asChild
           >
-            <Link href={"/dashboard/url-shortener"}>URL Shortener</Link>
+            <Link href={"/url-shortener"}>
+              <Paperclip />
+            </Link>
           </Button>
         </SignedIn>
-      </div>
-      <div className="flex items-center gap-1">
+        <Button
+          className="md:text-sm text-xs tracking-wide"
+          variant={pathname == "/collaborative-textbox" ? "secondary" : "ghost"}
+          size={"icon"}
+          asChild
+        >
+          <Link href={"/collaborative-textbox"}>
+            <SquareMousePointer />
+          </Link>
+        </Button>
+        <Button
+          className="md:text-sm text-xs tracking-wide"
+          variant={pathname == "/mdx-editor" ? "secondary" : "ghost"}
+          size={"icon"}
+          asChild
+        >
+          <Link href={"/mdx-editor"}>
+            <Code />
+          </Link>
+        </Button>
         <ModeToggle />
         <SignedIn>
           <SignOutButton>
