@@ -30,17 +30,20 @@ export default function FileList() {
   const { userId } = useAuth();
 
   // fetch data
-  const fetchData = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("file_links")
-      .select("*")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: true });
-    if (error) console.error("Error fetching data:", error);
-    else setFile(data || []);
-    setLoading(false);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("file_links")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: true });
+      if (error) console.error("Error fetching data:", error);
+      else setFile(data || []);
+      setLoading(false);
+    };
+    fetchData();
+  }, [userId]);
 
   // delete record
   const deleteRecord = async (id: number) => {
@@ -60,12 +63,8 @@ export default function FileList() {
     toast.success("Copied to clipboard!");
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [userId]);
-
   return (
-    <div className="space-y-3 py-10">
+    <div className="space-y-3 pt-10">
       <h2 className="font-semibold">Your Uploaded Files</h2>
       {loading && <Skeleton className="flex rounded-xl w-full h-12" />}
       {file.length === 0 && !loading && (

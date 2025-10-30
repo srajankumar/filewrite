@@ -25,7 +25,7 @@ const Hero = () => {
             </Button>
           </SignedIn>
           <Button asChild variant={"outline"}>
-            <a href={"/textbox"}>Open Textbox</a>
+            <a href={"/collaborative-textbox"}>Open Textbox</a>
           </Button>
           <Button asChild variant={"outline"}>
             <Link href={"/mdx-editor"}>MDX Editor</Link>

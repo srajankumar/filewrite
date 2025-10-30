@@ -37,13 +37,13 @@ export default function MDXEditor() {
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
                 autoFocus
-                className="min-h-[10rem] my-5"
+                className="min-h-[10rem]"
                 style={{ lineHeight: "1.75" }}
               />
             </div>
           </TabsContent>
           <TabsContent value="preview">
-            <article className="prose dark:prose-invert border-input rounded-md border bg-transparent px-3 py-2 shadow-xs w-full">
+            <article className="prose break-all dark:prose-invert border-input rounded-md border bg-transparent px-3 py-2 shadow-xs w-full">
               <Markdown
                 components={options}
                 remarkPlugins={[remarkGfm]}

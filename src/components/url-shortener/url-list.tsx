@@ -31,17 +31,20 @@ export default function UrlList() {
   const { userId } = useAuth();
 
   // fetch data
-  const fetchData = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("links")
-      .select("*")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: true });
-    if (error) console.error("Error fetching data:", error);
-    else setUrl(data || []);
-    setLoading(false);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("links")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: true });
+      if (error) console.error("Error fetching data:", error);
+      else setUrl(data || []);
+      setLoading(false);
+    };
+    fetchData();
+  }, [userId]);
 
   // delete record
   const deleteRecord = async (id: number) => {
@@ -61,12 +64,8 @@ export default function UrlList() {
     toast.success("Copied to clipboard!");
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [userId]);
-
   return (
-    <div className="space-y-3 py-10">
+    <div className="space-y-3 pt-10">
       <h2 className="font-semibold">Your Saved Links</h2>
       {loading && <Skeleton className="flex rounded-xl w-full h-24" />}
       {url.length === 0 && !loading && (

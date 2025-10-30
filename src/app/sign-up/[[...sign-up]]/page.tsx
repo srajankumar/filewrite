@@ -57,7 +57,6 @@ export default function Page() {
       // Set 'verifying' true to display second form
       // and capture the OTP code
       setVerifying(true);
-      setLoading(false);
     } catch (err) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling

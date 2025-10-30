@@ -64,7 +64,6 @@ export default function SignInForm() {
         // complete further steps.
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
-      setLoading(false);
     } catch (err) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling

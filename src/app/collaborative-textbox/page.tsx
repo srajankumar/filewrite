@@ -18,7 +18,6 @@ function App() {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const serverUrl =
@@ -33,8 +32,6 @@ function App() {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        setError(true);
-        setLoading(false);
       });
   }, []);
 
@@ -74,12 +71,15 @@ function App() {
   };
 
   return (
-    <main className="min-h-dvh max-w-xl mx-auto px-5 pb-28">
+    <main className="min-h-dvh max-w-xl mx-auto px-5 pb-20">
       <Header />
+      <h1 className="font-semibold text-2xl text-center py-5 mb-5">
+        Collaborative Textbox
+      </h1>
       {loading ? (
         <Loader />
       ) : (
-        <>
+        <div className="grid gap-5">
           {users && (
             <ul className="flex flex-wrap gap-2">
               {users.map((user) => (
@@ -96,7 +96,7 @@ function App() {
             ref={textareaRef}
             value={text}
             onChange={handleTextChange}
-            className="min-h-[10rem] my-5"
+            className="min-h-[10rem]"
             style={{ lineHeight: "1.75" }}
             autoFocus
             placeholder="Type here"
@@ -140,7 +140,7 @@ function App() {
               <BrushCleaning size={16} />
             </button>
           </div>
-        </>
+        </div>
       )}
     </main>
   );
