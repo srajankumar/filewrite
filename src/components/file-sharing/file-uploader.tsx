@@ -1,6 +1,15 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner";
+
+import { supabase } from "@/lib/supabaseClient";
+import { cn } from "@/lib/utils";
+
+import { useFileUpload } from "@/hooks/use-file-upload";
+
 import {
   PaperclipIcon,
   UploadIcon,
@@ -9,23 +18,19 @@ import {
   CopyIcon,
   ArrowUpRight,
 } from "lucide-react";
-import { useFileUpload } from "@/hooks/use-file-upload";
-import { Button } from "@/components/ui/button";
-import { supabase } from "@/lib/supabaseClient";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import Qr from "@/components/qr";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 
-import { useAuth } from "@clerk/nextjs";
+import Qr from "@/components/qr";
+import FileList from "@/components/file-sharing/file-list";
 
 function generateShortCode(length = 4) {
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -36,7 +41,54 @@ function generateShortCode(length = 4) {
   return code;
 }
 
+type FileItem = {
+  id: number;
+  created_at: string;
+  short_code: string;
+};
+
 export default function FileUploader() {
+  const [file, setFile] = useState<FileItem[]>([]);
+  const [fileLoading, setFileLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [downloadPageURL, setDownloadPageURL] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  // clerk userId
+  const { userId } = useAuth();
+
+  // fetch data
+  useEffect(() => {
+    const fetchData = async () => {
+      setFileLoading(true);
+      const { data, error } = await supabase
+        .from("file_links")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: true });
+      if (error) console.error("Error fetching data:", error);
+      else setFile((data as FileItem[]) || []);
+      setFileLoading(false);
+    };
+    fetchData();
+  }, [userId]);
+
+  // delete record
+  const deleteFile = async (id: number) => {
+    const { error } = await supabase
+      .from("file_links")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", userId);
+    if (error) {
+      console.error("Error deleting record:", error);
+      toast.error("Failed to delete file. Please try again.");
+    } else {
+      toast.success("File deleted successfully!");
+      setFile((prev) => prev.filter((f) => f.id !== id));
+    }
+  };
+
   const [
     { files, isDragging },
     {
@@ -50,15 +102,9 @@ export default function FileUploader() {
     },
   ] = useFileUpload();
 
-  // clerk userId
-  const { userId } = useAuth();
-
   const fileObj = files[0]?.file;
-  const [uploading, setUploading] = useState(false);
-  const [downloadPageURL, setDownloadPageURL] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
     if (inputRef.current) {
@@ -106,18 +152,26 @@ export default function FileUploader() {
       else shortCode = generateShortCode();
     }
 
-    const { error: insertError } = await supabase.from("file_links").insert([
-      {
-        short_code: shortCode,
-        file_url: fileURL,
-        user_id: userId,
-      },
-    ]);
+    const { data: insertedRow, error: insertError } = await supabase
+      .from("file_links")
+      .insert([
+        {
+          short_code: shortCode,
+          file_url: fileURL,
+          user_id: userId,
+        },
+      ])
+      .select("*")
+      .single();
 
     if (insertError) {
       toast.error("Error saving link");
       setUploading(false);
       return;
+    }
+
+    if (insertedRow) {
+      setFile((prev) => [...(prev || []), insertedRow as FileItem]);
     }
 
     setDownloadPageURL(`${window.location.origin}/f/${shortCode}`);
@@ -253,6 +307,8 @@ export default function FileUploader() {
           </div>
         </div>
       )}
+
+      <FileList file={file} fileLoading={fileLoading} deleteFile={deleteFile} />
     </div>
   );
 }

@@ -1,13 +1,12 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
+import { toast } from "sonner";
+
 import { ArrowUpRight, Copy, Trash2 } from "lucide-react";
-import { supabase } from "@/lib/supabaseClient";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@clerk/nextjs";
 import {
   Tooltip,
   TooltipContent,
@@ -25,70 +24,41 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
 
-type File = {
+type FileItem = {
   id: number;
   created_at: string;
   short_code: string;
 };
 
-export default function FileList() {
-  const [file, setFile] = useState<File[]>([]);
-  const [loading, setLoading] = useState(true);
+type FileListProps = {
+  file?: FileItem[];
+  fileLoading: boolean;
+  deleteFile: (id: number) => Promise<void>;
+};
 
-  // clerk userId
-  const { userId } = useAuth();
-
-  // fetch data
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("file_links")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: true });
-      if (error) console.error("Error fetching data:", error);
-      else setFile(data || []);
-      setLoading(false);
-    };
-    fetchData();
-  }, [userId]);
-
-  // delete record
-  const deleteFile = async (id: number) => {
-    const { error } = await supabase
-      .from("file_links")
-      .delete()
-      .eq("id", id)
-      .eq("user_id", userId);
-    if (error) {
-      console.error("Error deleting record:", error);
-      toast.error("Failed to delete file. Please try again.");
-    } else {
-      toast.success("File deleted successfully!");
-      setFile((prev) => prev.filter((f) => f.id !== id));
-    }
-  };
-
+export default function FileList({
+  file = [],
+  fileLoading,
+  deleteFile,
+}: FileListProps) {
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(code);
     toast.success("Copied to clipboard!");
   };
 
   return (
-    <div className="space-y-3 pt-10">
+    <div className="space-y-3 pt-10 mt-2">
       <h2 className="font-semibold">Your Uploaded Files</h2>
-      {loading && <Skeleton className="flex rounded-xl w-full h-12" />}
-      {file.length === 0 && !loading && (
+      {fileLoading && <Skeleton className="flex rounded-xl w-full h-12" />}
+      {file.length === 0 && !fileLoading && (
         <div className="flex dark:bg-secondary/30 items-center justify-center gap-2 rounded-xl border px-4 py-2">
           <p className="text-sm py-1.5 text-muted-foreground">
             No files found.
           </p>
         </div>
       )}
-      {file.length != 0 && !loading && (
+      {file.length !== 0 && !fileLoading && (
         <ul className="space-y-3">
           {file.map((f) => (
             <li
@@ -151,6 +121,7 @@ export default function FileList() {
                       <AlertDialogAction asChild>
                         <Button
                           variant={"destructive"}
+                          className="w-full"
                           onClick={() => deleteFile(f.id)}
                         >
                           Continue

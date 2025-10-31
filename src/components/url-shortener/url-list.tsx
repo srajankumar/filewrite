@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { toast } from "sonner";
+
 import { ArrowUpRight, Copy, Sparkle, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -129,6 +130,7 @@ export default function UrlList({ url, urlLoading, deleteLink }: UrlListProps) {
                       <AlertDialogAction asChild>
                         <Button
                           variant={"destructive"}
+                          className="w-full"
                           onClick={() => deleteLink(u.id)}
                         >
                           Delete

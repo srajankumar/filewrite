@@ -1,5 +1,4 @@
 import React from "react";
-import FileList from "@/components/file-sharing/file-list";
 import FileUploader from "@/components/file-sharing/file-uploader";
 import type { Metadata } from "next";
 import Header from "@/components/header";
@@ -17,7 +16,6 @@ export default function FileSharing() {
           File Sharing
         </h1>
         <FileUploader />
-        <FileList />
       </div>
     </div>
   );
