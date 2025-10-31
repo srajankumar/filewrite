@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Download } from "lucide-react";
 
 interface DownloadButtonProps {
-  data: string | Blob | ArrayBuffer | Uint8Array;
+  data: string;
   fileName: string;
   mimeType: string;
 }
@@ -13,17 +13,9 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   fileName,
   mimeType,
 }) => {
-  const getBlobParts = (d: DownloadButtonProps["data"]): BlobPart[] => {
-    if (typeof d === "string") return [d];
-    if (d instanceof Blob) return [d];
-    if (d instanceof ArrayBuffer) return [new Uint8Array(d)];
-    if (ArrayBuffer.isView(d)) return [d as ArrayBufferView];
-    return [String(d)];
-  };
-
   const handleDownload = () => {
-    // Create a Blob from the normalized parts
-    const blob = new Blob(getBlobParts(data), { type: mimeType });
+    // Create a Blob from the data
+    const blob = new Blob([data], { type: mimeType });
 
     // Create a URL for the Blob
     const url = URL.createObjectURL(blob);
