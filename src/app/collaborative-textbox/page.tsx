@@ -4,10 +4,17 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "@/components/header";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { BrushCleaning, ClipboardPaste, CopyIcon } from "lucide-react";
+import {
+  BrushCleaning,
+  CheckIcon,
+  ClipboardPaste,
+  CopyIcon,
+} from "lucide-react";
 import { io } from "socket.io-client";
 import { toast } from "sonner";
 import Loader from "@/components/ui/loader";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
@@ -18,6 +25,9 @@ function App() {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [pasted, setPasted] = useState(false);
+  const [cleared, setCleared] = useState(false);
 
   useEffect(() => {
     const serverUrl =
@@ -33,11 +43,7 @@ function App() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
     // Listen for initial data
     socket.on("initialData", (data) => {
       //   console.log("Initial data received:", data);
@@ -63,6 +69,8 @@ function App() {
       socket.off("userListUpdate");
     };
   }, []);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
@@ -101,44 +109,102 @@ function App() {
             autoFocus
             placeholder="Type here"
           />
-          <div className="fixed bottom-10 md:right-10 right-5 bg-background shadow-lg rounded-full p-2 flex gap-3 border-2 border-primary z-50">
-            <button
+          <div className="fixed bottom-10 right-10 flex dark:bg-secondary/30 items-center justify-between gap-2 rounded-xl border p-3 z-50 bg-background">
+            <Button
+              variant={"ghost"}
+              size={"icon"}
               onClick={async () => {
                 await navigator.clipboard.writeText(text);
+                setCopied(true);
                 toast.success("Copied to clipboard!");
+                setTimeout(() => setCopied(false), 1500);
               }}
-              className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
-              type="button"
+              aria-label={copied ? "Copied" : "Copy to clipboard"}
+              disabled={copied}
             >
-              <CopyIcon size={16} />
-            </button>
-            <button
+              <div
+                className={cn(
+                  "transition-all",
+                  copied ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                )}
+              >
+                <CheckIcon className="stroke-emerald-500" size={16} />
+              </div>
+              <div
+                className={cn(
+                  "absolute transition-all",
+                  copied ? "scale-0 opacity-0" : "scale-100 opacity-100"
+                )}
+              >
+                <CopyIcon size={16} />
+              </div>
+            </Button>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
               onClick={async () => {
                 try {
                   const clipboardText = await navigator.clipboard.readText();
                   setText(clipboardText);
                   socket.emit("text-change", clipboardText);
+                  setPasted(true);
                   toast.success("Pasted from clipboard!");
+                  setTimeout(() => setPasted(false), 1500);
                 } catch (err) {
                   console.error(err);
                   toast.error("Failed to paste from clipboard.");
                 }
               }}
-              className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
-              type="button"
+              aria-label={pasted ? "Copied" : "Copy to clipboard"}
+              disabled={pasted}
             >
-              <ClipboardPaste size={16} />
-            </button>
-            <button
-              className="rounded-full md:hover:text-primary transition-all duration-200 size-9 flex justify-center items-center"
+              <div
+                className={cn(
+                  "transition-all",
+                  pasted ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                )}
+              >
+                <CheckIcon className="stroke-emerald-500" size={16} />
+              </div>
+              <div
+                className={cn(
+                  "absolute transition-all",
+                  pasted ? "scale-0 opacity-0" : "scale-100 opacity-100"
+                )}
+              >
+                <ClipboardPaste size={16} />
+              </div>
+            </Button>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
               onClick={() => {
                 setText("");
                 socket.emit("text-change", "");
+                setCleared(true);
+                toast.success("Cleared text!");
+                setTimeout(() => setCleared(false), 1500);
               }}
-              type="button"
+              aria-label={cleared ? "Copied" : "Copy to clipboard"}
+              disabled={cleared}
             >
-              <BrushCleaning size={16} />
-            </button>
+              <div
+                className={cn(
+                  "transition-all",
+                  cleared ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                )}
+              >
+                <CheckIcon className="stroke-emerald-500" size={16} />
+              </div>
+              <div
+                className={cn(
+                  "absolute transition-all",
+                  cleared ? "scale-0 opacity-0" : "scale-100 opacity-100"
+                )}
+              >
+                <BrushCleaning size={16} />
+              </div>
+            </Button>
           </div>
         </div>
       )}

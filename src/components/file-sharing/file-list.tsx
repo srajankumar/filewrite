@@ -1,8 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
-import { ArrowUpRight, Copy, Trash2 } from "lucide-react";
+import { ArrowUpRight, Check, Copy, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,9 +45,13 @@ export default function FileList({
   fileLoading,
   deleteFile,
 }: FileListProps) {
+  const [copied, setCopied] = useState(false);
+
   const handleCopy = (code: string) => {
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(`${window.location.origin}/f/${code}`);
+    setCopied(true);
     toast.success("Copied to clipboard!");
+    setTimeout(() => setCopied(false), 1500);
   };
 
   return (
@@ -72,9 +79,28 @@ export default function FileList({
                 <Button
                   variant={"ghost"}
                   size={"icon"}
-                  onClick={() => handleCopy(f.short_code)}
+                  onClick={() => {
+                    handleCopy(f.short_code);
+                  }}
+                  aria-label={copied ? "Copied" : "Copy to clipboard"}
+                  disabled={copied}
                 >
-                  <Copy />
+                  <div
+                    className={cn(
+                      "transition-all",
+                      copied ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                    )}
+                  >
+                    <Check className="stroke-emerald-500" size={16} />
+                  </div>
+                  <div
+                    className={cn(
+                      "absolute transition-all",
+                      copied ? "scale-0 opacity-0" : "scale-100 opacity-100"
+                    )}
+                  >
+                    <Copy />
+                  </div>
                 </Button>
                 <TooltipProvider delayDuration={0}>
                   <Tooltip>
