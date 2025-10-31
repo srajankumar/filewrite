@@ -1,11 +1,15 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
+import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabaseClient";
+
+import { ArrowUpRight, CheckIcon, CopyIcon } from "lucide-react";
+
 import { cn } from "@/lib/utils";
+import { supabase } from "@/lib/supabaseClient";
 // import {
 //   Select,
 //   SelectContent,
@@ -21,11 +25,17 @@ import {
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, CheckIcon, CopyIcon } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
-import Qr from "@/components/qr";
 
-import { useAuth } from "@clerk/nextjs";
+import Qr from "@/components/qr";
+import UrlList from "@/components/url-shortener/url-list";
+
+type LinkItem = {
+  id: number;
+  created_at: string;
+  short_code: string;
+  original_url: string;
+};
 
 // const durations: { label: string; value: number }[] = [
 //   { label: "1 Hour", value: 1 },
@@ -37,14 +47,47 @@ import { useAuth } from "@clerk/nextjs";
 
 export default function UrlShortener() {
   const [originalUrl, setOriginalUrl] = useState("");
-  const [duration, setDuration] = useState(1);
+  // const [duration, setDuration] = useState(1);
+  const [duration] = useState(1);
   const [shortUrl, setShortUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [copied, setCopied] = useState(false);
+  const [url, setUrl] = useState<LinkItem[]>([]);
+  const [urlLoading, setUrlLoading] = useState(true);
 
   // clerk userId
   const { userId } = useAuth();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setUrlLoading(true);
+      const { data, error } = await supabase
+        .from("links")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: true });
+      if (error) console.error("Error fetching data:", error);
+      else setUrl((data as LinkItem[]) || []);
+      setUrlLoading(false);
+    };
+    fetchData();
+  }, [userId]);
+
+  const deleteLink = async (id: number) => {
+    const { error } = await supabase
+      .from("links")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", userId);
+    if (error) {
+      console.error("Error deleting record:", error);
+      toast.error("Failed to delete the link. Please try again.");
+    } else {
+      toast.success("Link deleted successfully!");
+      setUrl((prev) => prev.filter((u) => u.id !== id));
+    }
+  };
 
   const handleCopy = () => {
     if (inputRef.current) {
@@ -64,14 +107,18 @@ export default function UrlShortener() {
 
     const expiresAt = new Date(Date.now() + duration * 60 * 60 * 1000);
 
-    const { error } = await supabase.from("links").insert([
-      {
-        original_url: originalUrl,
-        short_code: shortCode,
-        expires_at: expiresAt.toISOString(),
-        user_id: userId,
-      },
-    ]);
+    const { data, error } = await supabase
+      .from("links")
+      .insert([
+        {
+          original_url: originalUrl,
+          short_code: shortCode,
+          expires_at: expiresAt.toISOString(),
+          user_id: userId,
+        },
+      ])
+      .select("*")
+      .single();
 
     if (error) {
       console.error(error);
@@ -82,6 +129,11 @@ export default function UrlShortener() {
 
     setShortUrl(`${window.location.origin}/r/${shortCode}`);
     setOriginalUrl("");
+
+    if (data) {
+      setUrl((prev) => [...(prev || []), data as unknown as LinkItem]);
+    }
+
     setLoading(false);
   };
 
@@ -182,6 +234,7 @@ export default function UrlShortener() {
           </div>
         </div>
       )}
+      <UrlList url={url} urlLoading={urlLoading} deleteLink={deleteLink} />
     </div>
   );
 }

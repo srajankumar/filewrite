@@ -1,13 +1,10 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { ArrowUpRight, Copy, Sparkle, Trash2 } from "lucide-react";
-import { supabase } from "@/lib/supabaseClient";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@clerk/nextjs";
 import {
   Tooltip,
   TooltipContent,
@@ -25,69 +22,36 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
 
-type URL = {
+type LinkItem = {
   id: number;
   created_at: string;
   short_code: string;
   original_url: string;
 };
 
-export default function UrlList() {
-  const [url, setUrl] = useState<URL[]>([]);
-  const [loading, setLoading] = useState(true);
+type UrlListProps = {
+  url: LinkItem[];
+  urlLoading: boolean;
+  deleteLink: (id: number) => Promise<void>;
+};
 
-  // clerk userId
-  const { userId } = useAuth();
-
-  // fetch data
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("links")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: true });
-      if (error) console.error("Error fetching data:", error);
-      else setUrl(data || []);
-      setLoading(false);
-    };
-    fetchData();
-  }, [userId]);
-
-  // delete record
-  const deleteLink = async (id: number) => {
-    const { error } = await supabase
-      .from("links")
-      .delete()
-      .eq("id", id)
-      .eq("user_id", userId);
-    if (error) {
-      console.error("Error deleting record:", error);
-      toast.error("Failed to delete the link. Please try again.");
-    } else {
-      toast.success("File deleted successfully!");
-      setUrl((prev) => prev.filter((u) => u.id !== id));
-    }
-  };
-
+export default function UrlList({ url, urlLoading, deleteLink }: UrlListProps) {
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(code);
     toast.success("Copied to clipboard!");
   };
 
   return (
-    <div className="space-y-3 pt-10">
+    <div className="space-y-3 pt-10 mt-3">
       <h2 className="font-semibold">Your Saved Links</h2>
-      {loading && <Skeleton className="flex rounded-xl w-full h-24" />}
-      {url.length === 0 && !loading && (
+      {urlLoading && <Skeleton className="flex rounded-xl w-full h-24" />}
+      {url.length === 0 && !urlLoading && (
         <div className="flex dark:bg-secondary/30 items-center justify-center gap-2 rounded-xl border px-4 py-2">
           <p className="text-sm py-7 text-muted-foreground">No links found.</p>
         </div>
       )}
-      {url.length != 0 && !loading && (
+      {url.length !== 0 && !urlLoading && (
         <ul className="space-y-3">
           {url.map((u) => (
             <li
@@ -107,7 +71,9 @@ export default function UrlList() {
                     href={`${window.location.origin}/r/${u.short_code}`}
                     target="_blank"
                     className="text-sm text-primary hover:underline underline-offset-4 break-all"
-                  >{`${window.location.origin}/r/${u.short_code}`}</Link>
+                  >
+                    {`${window.location.origin}/r/${u.short_code}`}
+                  </Link>
                 </div>
               </div>
               <div className="flex items-center gap-1">

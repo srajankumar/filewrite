@@ -1,5 +1,4 @@
 import React from "react";
-import UrlList from "@/components/url-shortener/url-list";
 import UrlShortener from "@/components/url-shortener/url-shortener";
 import type { Metadata } from "next";
 import Header from "@/components/header";
@@ -17,7 +16,6 @@ export default function URLShortener() {
           URL Shortener
         </h1>
         <UrlShortener />
-        <UrlList />
       </div>
     </div>
   );
