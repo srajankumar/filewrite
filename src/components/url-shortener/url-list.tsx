@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 import { ArrowUpRight, Check, Copy, Sparkle, Trash2 } from "lucide-react";
@@ -47,7 +46,6 @@ export default function UrlList({ url, urlLoading, deleteLink }: UrlListProps) {
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(`${window.location.origin}/r/${code}`);
     setCopied(true);
-    toast.success("Copied to clipboard!");
     setTimeout(() => setCopied(false), 1500);
   };
 

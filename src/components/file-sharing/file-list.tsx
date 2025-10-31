@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 import { ArrowUpRight, Check, Copy, Trash2 } from "lucide-react";
@@ -50,7 +49,6 @@ export default function FileList({
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(`${window.location.origin}/f/${code}`);
     setCopied(true);
-    toast.success("Copied to clipboard!");
     setTimeout(() => setCopied(false), 1500);
   };
 

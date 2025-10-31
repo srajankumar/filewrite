@@ -116,7 +116,6 @@ function App() {
               onClick={async () => {
                 await navigator.clipboard.writeText(text);
                 setCopied(true);
-                toast.success("Copied to clipboard!");
                 setTimeout(() => setCopied(false), 1500);
               }}
               aria-label={copied ? "Copied" : "Copy to clipboard"}
@@ -148,14 +147,13 @@ function App() {
                   setText(clipboardText);
                   socket.emit("text-change", clipboardText);
                   setPasted(true);
-                  toast.success("Pasted from clipboard!");
                   setTimeout(() => setPasted(false), 1500);
                 } catch (err) {
                   console.error(err);
                   toast.error("Failed to paste from clipboard.");
                 }
               }}
-              aria-label={pasted ? "Copied" : "Copy to clipboard"}
+              aria-label={pasted ? "Pasted" : "Pasted from clipboard"}
               disabled={pasted}
             >
               <div
@@ -182,10 +180,9 @@ function App() {
                 setText("");
                 socket.emit("text-change", "");
                 setCleared(true);
-                toast.success("Cleared text!");
                 setTimeout(() => setCleared(false), 1500);
               }}
-              aria-label={cleared ? "Copied" : "Copy to clipboard"}
+              aria-label={cleared ? "Cleared" : "Cleared text"}
               disabled={cleared}
             >
               <div
